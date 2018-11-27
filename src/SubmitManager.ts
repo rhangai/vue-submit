@@ -70,6 +70,8 @@ export class SubmitManager {
 	 * @param options 
 	 */
 	static install( vue, options: any ) {
+		if ( typeof(options) === 'string' )
+			options = { framework: options };
 		const submitManager = new SubmitManager( vue, options );
 		Object.defineProperty( vue.prototype, "$submit", {
 			configurable: true,

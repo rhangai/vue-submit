@@ -13,6 +13,42 @@ export function createDefaultsVanilla( submitManager: SubmitManager ) {
 };
 export function createDefaultsBuefy( submitManager: SubmitManager, parentDefaults: any ) {
 	return {
+		confirmation( vm, confirmationData ) {
+			if ( typeof(confirmationData) === 'function' )
+				confirmationData = confirmationData.call( vm, vm );
+			if ( !confirmationData )
+				return true;
+			if ( typeof(confirmationData) === 'string' )
+				confirmationData = { message: confirmationData };
+
+			return new Promise( function( resolve, reject ) {
+				const confirmationDefaults = typeof(submitManager.options.confirmationDefaults) === 'function' ?
+					submitManager.options.confirmationDefaults.call( vm, confirmationData ) :
+					submitManager.options.confirmationDefaults;
+
+				let dialog = vm.$dialog.confirm({
+					title: "Confirmação",
+					confirmText: "OK",
+					cancelText: "Cancelar",
+					hasIcon: true,
+					scroll: 'keep',
+					icon: confirmationData.icon || (confirmationData.type == "is-danger" ? "alert-decagram" : "information" ),
+					...confirmationDefaults,
+					...confirmationData,
+					onConfirm: () => { resolve( true ); },
+					onCancel:  () => { resolve( false ); },
+				});
+				const closeDialog = function() {
+					if ( dialog ) {
+						dialog.close();
+						dialog = null;
+					}
+					vm.$off( 'hook:beforeDestroy', closeDialog );
+				};
+				vm.$once( 'hook:beforeDestroy', closeDialog );
+				dialog.$once( 'hook:beforeDestroy', () => vm.$off( 'hook:beforeDestroy', closeDialog ) );
+			});
+		},
 		notify( vm, notifyData ) {
 			if ( typeof(notifyData) === 'function' )
 				notifyData = notifyData.call( vm, vm, notifyData );
@@ -20,14 +56,21 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 				return;
 			if ( typeof(notifyData) === 'string' )
 				notifyData = { message: notifyData };
-			vm.$toast.open( notifyData );
+			const notifyDefaults = typeof(submitManager.options.notifyDefaults) === 'function' ?
+				submitManager.options.notifyDefaults.call( vm, notifyData ) :
+				submitManager.options.notifyDefaults;
+			vm.$toast.open({ 
+				queue: false,
+				...notifyDefaults, 
+				...notifyData,
+			});
 		},
 		notifyDefaultError: { type: 'is-danger', message: "Ocorreu um Erro." },
 		notifyDefaultErrorValidation: { type: 'is-danger', message: "Verifique os campos e tente novamente." },
 	};
 };
 
-export  default function createDefaults( submitManager: SubmitManager, framework: SubmitOptionsFramework = null  ) {
+export default function createDefaults( submitManager: SubmitManager, framework: SubmitOptionsFramework = null  ) {
 	let defaults: any = createDefaultsVanilla( submitManager );
 	if ( framework === 'buefy' )
 		defaults = Object.assign( defaults, createDefaultsBuefy( submitManager, defaults ) );
