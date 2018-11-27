@@ -1,0 +1,9 @@
+{
+  "name": "@renanhangai/vue-submit",
+  "version": "0.0.0",
+  "description": "Vue submit helper",
+  "main": "dist/vue-submit.min.js",
+  "repository": "https://gitlab.com/renanhangai_/vue/vue-submit.git",
+  "author": "renanhangai <hangai.renan@gmail.com>",
+  "license": "MIT"
+}
