@@ -1,6 +1,6 @@
 {
   "name": "@renanhangai/vue-submit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Vue submit helper",
   "main": "dist/vue-submit.js",
   "repository": "https://gitlab.com/renanhangai_/vue/vue-submit.git",
