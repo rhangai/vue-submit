@@ -1,16 +1,16 @@
-import { Submit, SubmitOptions, SubmitOptionsCompat } from "./Submit";
+import { SubmitManager, SubmitOptions, SubmitManagerCompatOptions } from "./SubmitManager";
 import { ValidatorError } from "./Error";
 
 
 export class Submission {
 
-	private parent: Submit;
+	private parent: SubmitManager;
 	private vm: any;
 	private options: SubmitOptions;
-	readonly compat:  SubmitOptionsCompat;
+	readonly compat:  SubmitManagerCompatOptions;
 	readonly hasLoader: Boolean;
 
-	constructor( parent: Submit, vm: any, options: SubmitOptions ) {
+	constructor( parent: SubmitManager, vm: any, options: SubmitOptions ) {
 		this.parent   = parent;
 		this.vm       = vm;
 		this.options  = options;
@@ -25,7 +25,19 @@ export class Submission {
 		return Promise.resolve()
 			.then( () => this.loaderStart() )
 			.then( () => this.validatorRun() )
-			.then( () => this.loaderFinish(), ( err ) => this.loaderFinish( err ) );
+			.then( () => this.confirmationRun() )
+			.then( ( confirmation: any ) => {
+				if ( confirmation === false )
+					return;
+				return Promise.resolve( this.requestRun() )
+					.then( () => this.submitFinish() );
+			})
+			.catch( ( err ) => this.submitFinish( err ) );
+	}
+	submitFinish( err = null ) {
+		return Promise.resolve()
+			.then( () => this.notify( err ) ).catch( () => null )
+			.then( () => this.loaderFinish( err ) );
 	}
 
 	/**
@@ -48,7 +60,7 @@ export class Submission {
 	}
 
 	/**
-	 * 
+	 * Validate the parameter
 	 */
 	validatorRun() {
 		if ( !this.options.validator )
@@ -67,6 +79,23 @@ export class Submission {
 				throw new ValidatorError;
 		} else if ( validator )
 			throw new Error( "Invalid type of validator" );
+	}
+	/**
+	 * Confirm the action somehow
+	 */
+	confirmationRun() {}
+	/**
+	 * Run the request
+	 */
+	requestRun() {
+		return this.parent.doRequest( this.vm, this.options, this.options );
+	}
+	/**
+	 * Notify
+	 */
+	notify( err ) {
+		const notifyData = {};
+		this.parent.doNotify( this.vm, this.options, notifyData );
 	}
 
 };

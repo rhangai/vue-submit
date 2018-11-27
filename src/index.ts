@@ -1,2 +1,3 @@
-import { Submit } from "./Submit";
-export default Submit;
+import { SubmitManager } from "./SubmitManager";
+
+export default SubmitManager;
