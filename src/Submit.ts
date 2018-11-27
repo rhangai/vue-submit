@@ -1,4 +1,5 @@
 import { Submission } from "./Submission";
+import { ValidatorError } from "./Error";
 
 export const ERROR_STATUS = {
 	ERROR:     "ERROR",
@@ -13,10 +14,13 @@ export interface SubmitConstructorOptions {
 	compat: SubmitOptionsCompat,
 };
 export interface SubmitOptions {
-	loading?: Boolean,
+	validator?: any,
+	loading?:   Boolean,
 };
 
 export class Submit {
+	static ValidatorError = ValidatorError;
+
 	readonly Vue: any;
 	readonly options: SubmitConstructorOptions;
 
