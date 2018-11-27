@@ -6,12 +6,12 @@ export class Submission {
 
 	private readonly parent: SubmitManager;
 	private readonly vm: any;
-	private readonly name: String;
+	private readonly name: string;
 	private readonly options: SubmitOptions;
 	private readonly hasLoader: Boolean;
 	private readonly compat:  SubmitManagerCompatOptions;
 
-	constructor( parent: SubmitManager, vm: any, name: String, options: SubmitOptions ) {
+	constructor( parent: SubmitManager, vm: any, name: string, options: SubmitOptions ) {
 		this.parent   = parent;
 		this.vm       = vm;
 		this.name     = name;
@@ -22,10 +22,10 @@ export class Submission {
 
 	submit() {
 		const { Promise } = this.compat;
-		if ( this.vm.$data.$submitting[name] )
+		if ( this.vm.$data.$submitting[this.name] )
 			return Promise.resolve( false );
-		this.vm.$set( this.vm.$data.$submitting, name, true );
-		this.vm.$set( this.vm.$data.$submitError, name, false );
+		this.vm.$set( this.vm.$data.$submitting, this.name, true );
+		this.vm.$set( this.vm.$data.$submitError, this.name, false );
 		return Promise.resolve()
 			.then( () => this.loaderStart() )
 			.then( () => this.validatorRun() )
@@ -47,8 +47,8 @@ export class Submission {
 			.then( () => this.notify( err ) ).catch( () => null )
 			.then( () => this.loaderFinish( err ) ).catch( () => null )
 			.then( () => {
-				this.vm.$set( this.vm.$data.$submitting, name, false );
-				this.vm.$set( this.vm.$data.$submitError, name, err );
+				this.vm.$set( this.vm.$data.$submitting, this.name, false );
+				this.vm.$set( this.vm.$data.$submitError, this.name, err );
 			});
 	}
 

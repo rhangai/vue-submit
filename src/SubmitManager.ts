@@ -38,7 +38,7 @@ export class SubmitManager {
 		};
 	}
 
-	submit( vm, name, submitOptions: SubmitOptions ) {
+	submit( vm, name: string, submitOptions: SubmitOptions ) {
 		if ( vm.$data.$submitting[name] )
 			return this.options.compat.Promise.resolve( false );
 		const submission = new Submission( this, vm, name, submitOptions );
