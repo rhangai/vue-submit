@@ -16,8 +16,10 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 		confirmation( vm, confirmationData ) {
 			if ( typeof(confirmationData) === 'function' )
 				confirmationData = confirmationData.call( vm, vm );
-			if ( !confirmationData )
+			if ( confirmationData == null || confirmationData === true )
 				return true;
+			else if ( confirmationData === false )
+				return false;
 			if ( typeof(confirmationData) === 'string' )
 				confirmationData = { message: confirmationData };
 

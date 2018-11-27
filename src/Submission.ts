@@ -4,15 +4,17 @@ import { SubmitOptions, SubmitManagerCompatOptions } from "./Options";
 
 export class Submission {
 
-	private parent: SubmitManager;
-	private vm: any;
-	private options: SubmitOptions;
-	readonly compat:  SubmitManagerCompatOptions;
-	readonly hasLoader: Boolean;
+	private readonly parent: SubmitManager;
+	private readonly vm: any;
+	private readonly name: String;
+	private readonly options: SubmitOptions;
+	private readonly hasLoader: Boolean;
+	private readonly compat:  SubmitManagerCompatOptions;
 
-	constructor( parent: SubmitManager, vm: any, options: SubmitOptions ) {
+	constructor( parent: SubmitManager, vm: any, name: String, options: SubmitOptions ) {
 		this.parent   = parent;
 		this.vm       = vm;
+		this.name     = name;
 		this.options  = options;
 		this.compat   = parent.options.compat;
 		this.hasLoader = this.loaderCheck();
@@ -22,6 +24,8 @@ export class Submission {
 		const { Promise } = this.compat;
 		if ( this.vm.$data.$submitting[name] )
 			return Promise.resolve( false );
+		this.vm.$set( this.vm.$data.$submitting, name, true );
+		this.vm.$set( this.vm.$data.$submitError, name, false );
 		return Promise.resolve()
 			.then( () => this.loaderStart() )
 			.then( () => this.validatorRun() )
@@ -30,15 +34,22 @@ export class Submission {
 				if ( confirmation === false )
 					return;
 				return Promise.resolve( this.requestRun() )
-					.then( () => this.submitFinish() );
+					.then( ( result ) => {
+						if ( this.options.success )
+							return this.options.success.call( this.vm, result );
+					});
 			})
-			.catch( ( err ) => this.submitFinish( err ) );
+			.then( () => this.submitFinish(), ( err ) => this.submitFinish( err ) );
 	}
 	submitFinish( err = null ) {
 		const { Promise } = this.compat;
 		return Promise.resolve()
 			.then( () => this.notify( err ) ).catch( () => null )
-			.then( () => this.loaderFinish( err ) );
+			.then( () => this.loaderFinish( err ) ).catch( () => null )
+			.then( () => {
+				this.vm.$set( this.vm.$data.$submitting, name, false );
+				this.vm.$set( this.vm.$data.$submitError, name, err );
+			});
 	}
 
 	/**
@@ -85,9 +96,7 @@ export class Submission {
 	 * Confirm the action somehow
 	 */
 	confirmationRun() {
-		if ( !this.options.confirmation )
-			return true;
-		return this.parent.doConfirmation( this.vm, this.options, this.options );
+		return this.parent.doConfirmation( this.vm, this.options, this.options.confirmation );
 	}
 	/**
 	 * Run the request

@@ -4,6 +4,7 @@ export interface SubmitOptions {
 	validator?: any,
 	loading?:   Boolean,
 	request?: ( vm: any, requestData: any ) => any,
+	success?: ( result: any ) => any,
 	confirmation?: any,
 	notify?: any,
 	notifyError?: any,
