@@ -8,7 +8,7 @@ module.exports = {
 	mode,
 	target: 'web',
 	output: {
-		filename: 'vue-submit.js',
+		filename: isDev ? 'vue-submit.dev.js' : 'vue-submit.js',
 		libraryTarget: 'umd',
 		library: 'VueSubmit',
 	},
