@@ -51,19 +51,20 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 				dialog.$once( 'hook:beforeDestroy', () => vm.$off( 'hook:beforeDestroy', closeDialog ) );
 			});
 		},
-		notify( vm, notifyData ) {
+		notify( vm, notifyData, notifyDefaults ) {
 			if ( typeof(notifyData) === 'function' )
 				notifyData = notifyData.call( vm, vm, notifyData );
 			if ( !notifyData )
 				return;
 			if ( typeof(notifyData) === 'string' )
 				notifyData = { message: notifyData };
-			const notifyDefaults = typeof(submitManager.options.notifyDefaults) === 'function' ?
+			const notifyGlobalDefaults = typeof(submitManager.options.notifyDefaults) === 'function' ?
 				submitManager.options.notifyDefaults.call( vm, notifyData ) :
 				submitManager.options.notifyDefaults;
 			vm.$toast.open({ 
 				queue: false,
-				...notifyDefaults, 
+				...notifyGlobalDefaults, 
+				...notifyDefaults,
 				...notifyData,
 			});
 		},

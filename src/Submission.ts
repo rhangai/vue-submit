@@ -113,7 +113,7 @@ export class Submission {
 		} else if ( err instanceof ValidatorError ) {
 			this.parent.doNotify( this.vm, this.options, this.parent.options.notifyDefaultErrorValidation );
 		} else {
-			this.parent.doNotify( this.vm, this.options, this.options.notifyError || this.parent.options.notifyDefaultError );
+			this.parent.doNotify( this.vm, this.options, this.options.notifyError, this.parent.options.notifyDefaultError );
 		}
 	}
 

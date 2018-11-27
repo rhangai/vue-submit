@@ -50,10 +50,10 @@ export class SubmitManager {
 			return;
 		return this.options.confirmation.call( vm, vm, confirmationData );
 	}
-	doNotify( vm: any, submitOptions: SubmitOptions, notifyData: any ) {
+	doNotify( vm: any, submitOptions: SubmitOptions, notifyData: any, notifyDefaults?: any ) {
 		if ( !this.options.notify )
 			return;
-		return this.options.notify.call( vm, vm, notifyData );
+		return this.options.notify.call( vm, vm, notifyData, notifyDefaults );
 	}
 	doRequest( vm: any, submitOptions: SubmitOptions, requestData: any ) {
 		const request = submitOptions.request || this.options.request;
