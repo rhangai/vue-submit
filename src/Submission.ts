@@ -1,6 +1,6 @@
-import { SubmitManager, SubmitManagerCompatOptions } from "./SubmitManager";
+import { SubmitManager } from "./SubmitManager";
 import { ValidatorError } from "./Error";
-import { SubmitOptions } from "./Options";
+import { SubmitOptions, SubmitManagerCompatOptions } from "./Options";
 
 export class Submission {
 
@@ -35,6 +35,7 @@ export class Submission {
 			.catch( ( err ) => this.submitFinish( err ) );
 	}
 	submitFinish( err = null ) {
+		const { Promise } = this.compat;
 		return Promise.resolve()
 			.then( () => this.notify( err ) ).catch( () => null )
 			.then( () => this.loaderFinish( err ) );
@@ -99,14 +100,12 @@ export class Submission {
 	 */
 	notify( err ) {
 		if ( !err ) {
-			if ( !this.options.notify )
-				return;
 			this.parent.doNotify( this.vm, this.options, this.options.notify );
 		} else if ( err instanceof ValidatorError ) {
-			this.parent.doNotify( this.vm, this.options, this.options.notify );
+			this.parent.doNotify( this.vm, this.options, this.parent.options.notifyDefaultErrorValidation );
+		} else {
+			this.parent.doNotify( this.vm, this.options, this.options.notifyError || this.parent.options.notifyDefaultError );
 		}
-		// const notifyData = {};
-		// this.parent.doNotify( this.vm, this.options, notifyData );
 	}
 
 };

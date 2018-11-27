@@ -1,23 +1,11 @@
 import { Submission } from "./Submission";
 import { ValidatorError } from "./Error";
-import { SubmitOptions } from './Options';
+import { SubmitOptions, SubmitManagerCompatOptions, SubmitManagerConstructorOptions } from './Options';
 import createDefaults from "./Defaults";
 
 export const ERROR_STATUS = {
 	ERROR:     "ERROR",
 	VALIDATOR: "VALIDATOR",
-};
-
-export interface SubmitManagerCompatOptions {
-	Promise?: PromiseConstructor,
-	assign?:  ( ...args: any ) => any,
-};
-export interface SubmitManagerConstructorOptions {
-	compat: SubmitManagerCompatOptions,
-	confirmation?: ( vm: any, confirmationData: any ) => any,
-	notify?: ( vm: any, notifyData: any ) => any,
-	request?: ( vm: any, requestData: any ) => any,
-	requestDefaults?: any,
 };
 
 
@@ -33,12 +21,16 @@ export class SubmitManager {
 	}
 	private normalizeOptions( options: SubmitManagerConstructorOptions|null ): SubmitManagerConstructorOptions {
 		const opt: any = options || {};
-		const defaults = createDefaults( this, opt.mode );
+		const defaults = createDefaults( this, opt.framework );
 
 		const compat: any = opt.compat || {};
 		return {
-			request: opt.request || defaults.request,
+			confirmation:  opt.confirmation || defaults.confirmation,
 			notify:  opt.notify || defaults.notify,
+			notifyDefaultError:  opt.notifyDefaultError || defaults.notifyDefaultError,
+			notifyDefaultErrorValidation:  opt.notifyDefaultErrorValidation || defaults.notifyDefaultErrorValidation,
+			request: opt.request || defaults.request,
+			requestDefaults: opt.requestDefaults || defaults.requestDefaults,
 			compat: {
 				Promise: compat.Promise || (<any> window).Promise,
 				assign:  compat.assign  || Object.assign,

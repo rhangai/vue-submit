@@ -22,12 +22,14 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 				notifyData = { message: notifyData };
 			vm.$toast.open( notifyData );
 		},
+		notifyDefaultError: { type: 'is-danger', message: "Ocorreu um Erro." },
+		notifyDefaultErrorValidation: { type: 'is-danger', message: "Verifique os campos e tente novamente." },
 	};
 };
 
-export  default function createDefaults( submitManager: SubmitManager, mode: SubmitOptionsFramework = null  ) {
+export  default function createDefaults( submitManager: SubmitManager, framework: SubmitOptionsFramework = null  ) {
 	let defaults: any = createDefaultsVanilla( submitManager );
-	if ( mode === 'buefy' )
+	if ( framework === 'buefy' )
 		defaults = Object.assign( defaults, createDefaultsBuefy( submitManager, defaults ) );
 	return defaults;
 };

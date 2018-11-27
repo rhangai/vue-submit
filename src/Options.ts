@@ -1,11 +1,26 @@
 export type SubmitOptionsFramework = "buefy";
 
 export interface SubmitOptions {
-	framework?: SubmitOptionsFramework,
 	validator?: any,
 	loading?:   Boolean,
 	request?: ( vm: any, requestData: any ) => any,
 	confirmation?: any,
 	notify?: any,
 	notifyError?: any,
+};
+
+export interface SubmitManagerCompatOptions {
+	Promise?: PromiseConstructor,
+	assign?:  ( ...args: any ) => any,
+};
+
+export interface SubmitManagerConstructorOptions {
+	framework?: SubmitOptionsFramework,
+	compat: SubmitManagerCompatOptions,
+	confirmation?: ( vm: any, confirmationData: any ) => any,
+	notify?: ( vm: any, notifyData: any ) => any,
+	notifyDefaultError?: any,
+	notifyDefaultErrorValidation?: any,
+	request?: ( vm: any, requestData: any ) => any,
+	requestDefaults?: any,
 };
