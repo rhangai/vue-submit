@@ -3,4 +3,4 @@
 !/README.md
 !/dist
 !/dist/vue-submit.dev.js
-!/nuxt
+!/nuxt/*
