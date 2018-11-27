@@ -1,5 +1,6 @@
 import { Submission } from "./Submission";
 import { ValidatorError } from "./Error";
+import { SubmitOptions } from './Options';
 import createDefaults from "./Defaults";
 
 export const ERROR_STATUS = {
@@ -14,17 +15,11 @@ export interface SubmitManagerCompatOptions {
 export interface SubmitManagerConstructorOptions {
 	compat: SubmitManagerCompatOptions,
 	confirmation?: ( vm: any, confirmationData: any ) => any,
-	confirmationDefaults?: any,
 	notify?: ( vm: any, notifyData: any ) => any,
-	notifyDefaults?: any,
 	request?: ( vm: any, requestData: any ) => any,
 	requestDefaults?: any,
 };
-export interface SubmitOptions {
-	validator?: any,
-	loading?:   Boolean,
-	request?: ( vm: any, requestData: any ) => any,
-};
+
 
 export class SubmitManager {
 	static ValidatorError = ValidatorError;
@@ -37,13 +32,13 @@ export class SubmitManager {
 		this.options = this.normalizeOptions( options );
 	}
 	private normalizeOptions( options: SubmitManagerConstructorOptions|null ): SubmitManagerConstructorOptions {
-		const defaults = createDefaults( this );
+		const opt: any = options || {};
+		const defaults = createDefaults( this, opt.mode );
 
-		const opt: any    = options || {};
 		const compat: any = opt.compat || {};
 		return {
 			request: opt.request || defaults.request,
-			notify:  opt.notify,
+			notify:  opt.notify || defaults.notify,
 			compat: {
 				Promise: compat.Promise || (<any> window).Promise,
 				assign:  compat.assign  || Object.assign,
@@ -61,13 +56,11 @@ export class SubmitManager {
 	doConfirmation( vm: any, submitOptions: SubmitOptions, confirmationData: any ) {
 		if ( !this.options.confirmation )
 			return;
-		confirmationData = this.options.compat.assign( {}, this.options.confirmationDefaults, confirmationData );
 		return this.options.confirmation.call( vm, vm, confirmationData );
 	}
 	doNotify( vm: any, submitOptions: SubmitOptions, notifyData: any ) {
 		if ( !this.options.notify )
 			return;
-		notifyData = this.options.compat.assign( {}, this.options.notifyDefaults, notifyData );
 		return this.options.notify.call( vm, vm, notifyData );
 	}
 	doRequest( vm: any, submitOptions: SubmitOptions, requestData: any ) {

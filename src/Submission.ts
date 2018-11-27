@@ -1,6 +1,6 @@
-import { SubmitManager, SubmitOptions, SubmitManagerCompatOptions } from "./SubmitManager";
+import { SubmitManager, SubmitManagerCompatOptions } from "./SubmitManager";
 import { ValidatorError } from "./Error";
-
+import { SubmitOptions } from "./Options";
 
 export class Submission {
 
@@ -83,7 +83,11 @@ export class Submission {
 	/**
 	 * Confirm the action somehow
 	 */
-	confirmationRun() {}
+	confirmationRun() {
+		if ( !this.options.confirmation )
+			return true;
+		return this.parent.doConfirmation( this.vm, this.options, this.options );
+	}
 	/**
 	 * Run the request
 	 */
@@ -94,8 +98,15 @@ export class Submission {
 	 * Notify
 	 */
 	notify( err ) {
-		const notifyData = {};
-		this.parent.doNotify( this.vm, this.options, notifyData );
+		if ( !err ) {
+			if ( !this.options.notify )
+				return;
+			this.parent.doNotify( this.vm, this.options, this.options.notify );
+		} else if ( err instanceof ValidatorError ) {
+			this.parent.doNotify( this.vm, this.options, this.options.notify );
+		}
+		// const notifyData = {};
+		// this.parent.doNotify( this.vm, this.options, notifyData );
 	}
 
 };
