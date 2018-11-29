@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.6"></a>
+## [1.0.6](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.0.5...v1.0.6) (2018-11-29)
+
+
+### Bug Fixes
+
+* Submission and notification when confirmation is skipped ([a305495](https://gitlab.com/renanhangai_/vue/vue-submit/commit/a305495))
+
+
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.0.4...v1.0.5) (2018-11-29)
 
