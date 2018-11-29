@@ -32,19 +32,22 @@ export class Submission {
 			.then( () => this.confirmationRun() )
 			.then( ( confirmation: any ) => {
 				if ( confirmation === false )
-					return;
+					return false;
 				return Promise.resolve( this.requestRun() )
 					.then( ( result ) => {
 						if ( this.options.success )
 							return this.options.success.call( this.vm, result );
-					});
+					}).then( () => true );
 			})
-			.then( () => this.submitFinish(), ( err ) => this.submitFinish( err ) );
+			.then( ( hasSubmitted ) => this.submitFinish( null, !hasSubmitted ), ( err ) => this.submitFinish( err ) );
 	}
-	submitFinish( err = null ) {
+	submitFinish( err = null, skipped = false ) {
 		const { Promise } = this.compat;
 		return Promise.resolve()
-			.then( () => this.notify( err ) ).catch( () => null )
+			.then( () => {
+				if ( !skipped )
+					return this.notify( err );
+			} ).catch( () => null )
 			.then( () => this.loaderFinish( err ) ).catch( () => null )
 			.then( () => {
 				this.vm.$set( this.vm.$data.$submitting, this.name, false );
