@@ -56,6 +56,8 @@ export class SubmitManager {
 		return this.options.notify.call( vm, vm, notifyData, notifyDefaults );
 	}
 	doRequest( vm: any, submitOptions: SubmitOptions, requestData: any ) {
+		if ( submitOptions.request === false )
+			return;
 		const request = submitOptions.request || this.options.request;
 		if ( !request )
 			return;

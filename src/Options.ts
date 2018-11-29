@@ -6,7 +6,7 @@ export interface SubmitOptions {
 	//! Set to false if you do not want to trigger the loading bar from nuxt
 	loading?:   Boolean,
 	//! Override the request functions
-	request?: ( vm: any, requestData: any ) => any,
+	request?: false | (( vm: any, requestData: any ) => any),
 	//! Function to be called on success
 	success?: ( result: any ) => any,
 	//! Confirmation object passed to constructor
