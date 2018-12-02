@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.7"></a>
+## [1.0.7](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.0.6...v1.0.7) (2018-12-02)
+
+
+### Bug Fixes
+
+* Error.ts was using .js ([fdd4268](https://gitlab.com/renanhangai_/vue/vue-submit/commit/fdd4268))
+
+
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.0.5...v1.0.6) (2018-11-29)
 
