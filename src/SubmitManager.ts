@@ -27,8 +27,8 @@ export class SubmitManager {
 		return {
 			confirmation:  opt.confirmation || defaults.confirmation,
 			notify:  opt.notify || defaults.notify,
-			notifyDefaultError:  opt.notifyDefaultError || defaults.notifyDefaultError,
-			notifyDefaultErrorValidation:  opt.notifyDefaultErrorValidation || defaults.notifyDefaultErrorValidation,
+			notifyDefaultsError:  opt.notifyDefaultsError || defaults.notifyDefaultsError,
+			notifyDefaultsErrorValidation:  opt.notifyDefaultsErrorValidation || defaults.notifyDefaultsErrorValidation,
 			request: opt.request || defaults.request,
 			requestDefaults: opt.requestDefaults || defaults.requestDefaults,
 			compat: {

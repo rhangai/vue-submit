@@ -68,8 +68,8 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 				...notifyData,
 			});
 		},
-		notifyDefaultError: { type: 'is-danger', message: "Ocorreu um Erro." },
-		notifyDefaultErrorValidation: { type: 'is-danger', message: "Verifique os campos e tente novamente." },
+		notifyDefaultsError: { type: 'is-danger', message: "Ocorreu um Erro." },
+		notifyDefaultsErrorValidation: { type: 'is-danger', message: "Verifique os campos e tente novamente." },
 	};
 };
 

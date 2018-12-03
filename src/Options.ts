@@ -30,8 +30,8 @@ export interface SubmitManagerConstructorOptions {
 	//! Notification function to be called on notify step
 	notify?: ( vm: any, notifyData: any, notifyDefaults?: any ) => any,
 	notifyDefaults?: any,
-	notifyDefaultError?: any,
-	notifyDefaultErrorValidation?: any,
+	notifyDefaultsError?: any,
+	notifyDefaultsErrorValidation?: any,
 	//! Set the request function
 	request?: ( vm: any, requestData: any ) => any,
 	requestDefaults?: any,

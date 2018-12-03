@@ -88,9 +88,9 @@ export class Submission {
 		if ( validator === false ) {
 			throw new ValidatorError;
 		} else if( validator === true ) {
-		} else if ( this.options.validator.$touch ) {
-			this.options.validator.$touch();
-			if ( this.options.validator.$invalid )
+		} else if ( validator.$touch ) {
+			validator.$touch();
+			if ( validator.$invalid )
 				throw new ValidatorError;
 		} else if ( validator )
 			throw new Error( "Invalid type of validator" );
@@ -114,9 +114,9 @@ export class Submission {
 		if ( !err ) {
 			this.parent.doNotify( this.vm, this.options, this.options.notify );
 		} else if ( err instanceof ValidatorError ) {
-			this.parent.doNotify( this.vm, this.options, this.parent.options.notifyDefaultErrorValidation );
+			this.parent.doNotify( this.vm, this.options, this.parent.options.notifyDefaultsErrorValidation );
 		} else {
-			this.parent.doNotify( this.vm, this.options, this.options.notifyError, this.parent.options.notifyDefaultError );
+			this.parent.doNotify( this.vm, this.options, this.options.notifyError, this.parent.options.notifyDefaultsError );
 		}
 	}
 
