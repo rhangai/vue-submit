@@ -1,7 +1,7 @@
 import { Submission } from "./Submission";
 import { ValidatorError } from "./Error";
 import { SubmitOptions, SubmitManagerCompatOptions, SubmitManagerConstructorOptions } from './Options';
-import createDefaults from "./Defaults";
+import createDefaults from "./defaults";
 
 export const ERROR_STATUS = {
 	ERROR:     "ERROR",
