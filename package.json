@@ -6,7 +6,9 @@
   "repository": "https://gitlab.com/renanhangai_/vue/vue-submit.git",
   "author": "renanhangai <hangai.renan@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "js-file-download": "^0.4.4"
+  },
   "devDependencies": {
     "standard-version": "^4.4.0",
     "ts-loader": "^5.3.1",
