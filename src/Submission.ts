@@ -110,7 +110,7 @@ export class Submission {
 	/**
 	 * Notify
 	 */
-	notify( err ) {
+	notify( err: Error | null ) {
 		if ( !err ) {
 			this.parent.doNotify( this.vm, this.options, this.options.notify );
 		} else if ( err instanceof ValidatorError ) {
