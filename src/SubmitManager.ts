@@ -3,6 +3,8 @@ import { ValidatorError } from "./Error";
 import { SubmitOptions, SubmitManagerCompatOptions, SubmitManagerConstructorOptions } from './Options';
 import createDefaults from "./defaults";
 
+declare var global: any;
+
 export const ERROR_STATUS = {
 	ERROR:     "ERROR",
 	VALIDATOR: "VALIDATOR",
@@ -32,7 +34,7 @@ export class SubmitManager {
 			request: opt.request || defaults.request,
 			requestDefaults: opt.requestDefaults || defaults.requestDefaults,
 			compat: {
-				Promise: compat.Promise || (<any> window).Promise,
+				Promise: compat.Promise || (<any> global).Promise,
 				assign:  compat.assign  || Object.assign,
 			},
 		};
@@ -74,6 +76,7 @@ export class SubmitManager {
 	static install( vue, options: any ) {
 		if ( typeof(options) === 'string' )
 			options = { framework: options };
+		console.log( vue, options );
 		const submitManager = new SubmitManager( vue, options );
 		Object.defineProperty( vue.prototype, "$submit", {
 			configurable: true,
