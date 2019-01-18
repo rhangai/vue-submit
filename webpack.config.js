@@ -6,9 +6,10 @@ const mode  = isDev ? 'development' : 'production';
 module.exports = {
 	entry: './src/index.ts',
 	mode,
+	devtool: isDev ? 'inline-source-map' : 'hidden-source-map',
 	output: {
 		filename: isDev ? 'vue-submit.dev.js' : 'vue-submit.js',
-		libraryTarget: 'umd',
+		libraryTarget: 'commonjs2',
 		library: 'VueSubmit',
 	},
 	module: {
