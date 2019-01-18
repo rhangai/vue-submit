@@ -3,4 +3,8 @@
 !/README.md
 !/dist
 !/dist/vue-submit.dev.js
+!/dist/vue-submit.js.map
+!/dist/vue-submit.umd.dev.js
+!/dist/vue-submit.umd.js
+!/dist/vue-submit.umd.js.map
 !/nuxt/*
