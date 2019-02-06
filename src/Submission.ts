@@ -34,10 +34,8 @@ export class Submission {
 				if ( confirmation === false )
 					return false;
 				return Promise.resolve( this.requestRun() )
-					.then( ( result ) => {
-						if ( this.options.success )
-							return this.options.success.call( this.vm, result );
-					}).then( () => true );
+					.then( ( result ) => this.successRun( result ) )
+					.then( () => true );
 			})
 			.then( ( hasSubmitted ) => this.submitFinish( null, !hasSubmitted ), ( err ) => this.submitFinish( err ) );
 	}
@@ -105,7 +103,35 @@ export class Submission {
 	 * Run the request
 	 */
 	requestRun() {
-		return this.parent.doRequest( this.vm, this.options, this.options );
+		return this.parent.doRequest(this.vm, this.options, this.options);
+	}
+	/**
+	 * Run the success
+	 */
+	successRun( result: any ) {
+		const noop = () => null;
+
+		// Wether to call the forever callback
+		let isForever: boolean = !!this.options.forever;
+
+		let successCallback = null;
+		if ( this.options.success ) {
+			if ( typeof( this.options.success ) === 'function' ) {
+				successCallback = this.options.success;
+			} else if ( this.vm.$router ) {
+				successCallback = () => this.vm.$router.push( this.options.success );
+				isForever = true;
+			}
+		}
+
+		// Check 
+		let foreverCallback = null;
+		if ( isForever ) 
+			foreverCallback = () => new this.compat.Promise(noop);
+
+		return this.compat.Promise.resolve()
+			.then( successCallback || noop )
+			.then( foreverCallback || noop );
 	}
 	/**
 	 * Notify

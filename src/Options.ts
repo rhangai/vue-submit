@@ -1,14 +1,18 @@
 export type SubmitOptionsFramework = "buefy";
 
+export type SubmitOptionsSuccessCallback = ( result: any ) => any;
+
 export interface SubmitOptions {
 	//! The validator to use (vuelidate compatible)
 	validator?: any,
 	//! Set to false if you do not want to trigger the loading bar from nuxt
 	loading?:   Boolean,
+	//! Set to true if you never want to return from the submit in case of success.
+	forever?:   Boolean,
 	//! Override the request functions
 	request?: false | (( vm: any, requestData: any ) => any),
 	//! Function to be called on success
-	success?: ( result: any ) => any,
+	success?: SubmitOptionsSuccessCallback | string | object,
 	//! Confirmation object passed to constructor
 	confirmation?: any,
 	//! Notify options on success and errors
