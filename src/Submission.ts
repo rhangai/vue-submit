@@ -137,13 +137,29 @@ export class Submission {
 	 * Notify
 	 */
 	notify( err: Error | null ) {
+		// Notify the success state
 		if ( !err ) {
 			this.parent.doNotify( this.vm, this.options, this.options.notify );
-		} else if ( err instanceof ValidatorError ) {
-			this.parent.doNotify( this.vm, this.options, this.parent.options.notifyDefaultsErrorValidation );
-		} else {
-			this.parent.doNotify( this.vm, this.options, this.options.notifyError, this.parent.options.notifyDefaultsError );
+			return;
 		}
+		const validationError = ( err instanceof ValidatorError );
+		const errorContext = { error: err, validationError };
+
+		// Normalize error data
+		let notifyError: any = this.options.notifyError;
+		if ( typeof(notifyError) === 'function' ) {
+			notifyError = this.options.notifyError.call(null, errorContext);
+		} else if ( validationError ) {
+			notifyError = {};
+		}
+
+		// Get the error defaults
+		let notifyErrorDefaults: any = validationError ? this.parent.options.notifyDefaultsErrorValidation : this.parent.options.notifyDefaultsError;
+		if ( typeof(notifyErrorDefaults) === 'function' )
+			notifyErrorDefaults = notifyErrorDefaults.call( null, errorContext );
+
+		// Notify the error
+		this.parent.doNotify( this.vm, this.options, notifyError, notifyErrorDefaults );
 	}
 
 };
