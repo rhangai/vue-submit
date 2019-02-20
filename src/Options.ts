@@ -39,6 +39,8 @@ export interface SubmitManagerConstructorOptions {
 	//! Set the request function
 	request?: ( vm: any, requestData: any ) => any,
 	requestDefaults?: any,
+	//! Sentry support
+	sentry: any,
 	//! Compatibility options { Promise } for now
 	compat: SubmitManagerCompatOptions,
 };

@@ -33,6 +33,7 @@ export class SubmitManager {
 			notifyDefaultsErrorValidation:  opt.notifyDefaultsErrorValidation || defaults.notifyDefaultsErrorValidation,
 			request: opt.request || defaults.request,
 			requestDefaults: opt.requestDefaults || defaults.requestDefaults,
+			sentry: opt.sentry,
 			compat: {
 				Promise: compat.Promise || (<any> global).Promise,
 				assign:  compat.assign  || Object.assign,
@@ -65,6 +66,23 @@ export class SubmitManager {
 			return;
 		requestData = this.options.compat.assign( {}, this.options.requestDefaults, requestData );
 		return request.call( vm, vm, requestData );
+	}
+
+	captureException( vm: any, err: any ) {
+		if ( this.options.sentry === false )
+			return;
+
+		// Check if is default sentry
+		const isDefaultSentry: boolean = this.options.sentry === true || this.options.sentry == null;
+		if ( isDefaultSentry ) {
+			if ( !vm.$sentry )
+				return;
+			vm.$sentry.captureException( err );
+			return;
+		}
+
+		// Capture the sentry
+		this.options.sentry.captureException( err );
 	}
 
 	/**

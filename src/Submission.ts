@@ -43,6 +43,9 @@ export class Submission {
 		const { Promise } = this.compat;
 		return Promise.resolve()
 			.then( () => {
+				return this.parent.captureException( this.vm, err );
+			})
+			.then( () => {
 				if ( !skipped )
 					return this.notify( err );
 			} ).catch( () => null )
