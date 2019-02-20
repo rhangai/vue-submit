@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.2.0...v1.3.0) (2019-02-20)
+
+
+### Features
+
+* Added AxiosDownload export ([770b024](https://gitlab.com/renanhangai_/vue/vue-submit/commit/770b024))
+* Added sentry support ([8d3376c](https://gitlab.com/renanhangai_/vue/vue-submit/commit/8d3376c))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.1.4...v1.2.0) (2019-02-19)
 
