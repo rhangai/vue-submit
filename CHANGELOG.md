@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1"></a>
+## [1.3.1](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.3.0...v1.3.1) (2019-02-21)
+
+
+### Bug Fixes
+
+* Do not notify sentry when there is no exception ([d6b4031](https://gitlab.com/renanhangai_/vue/vue-submit/commit/d6b4031))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.2.0...v1.3.0) (2019-02-20)
 
