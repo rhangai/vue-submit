@@ -133,7 +133,7 @@ export class Submission {
 			foreverCallback = () => new this.compat.Promise(noop);
 
 		return this.compat.Promise.resolve()
-			.then( successCallback || noop )
+			.then( () => successCallback ? successCallback.call( this.vm, result ) : null )
 			.then( foreverCallback || noop );
 	}
 	/**
