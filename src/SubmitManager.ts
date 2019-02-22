@@ -69,6 +69,8 @@ export class SubmitManager {
 	}
 
 	captureException( vm: any, err: any ) {
+		if ( !err )
+			return;
 		if ( this.options.sentry === false )
 			return;
 
