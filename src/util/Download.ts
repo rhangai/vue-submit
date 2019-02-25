@@ -1,4 +1,4 @@
-import fileDownload from 'js-file-download';
+import * as fileDownload from 'js-file-download';
 
 /**
  * Download a file using an axios instance
@@ -16,7 +16,7 @@ export async function AxiosDownload( axiosInstance: any, options: any ) : Promis
 		throw new Error( "Invalid file download" );
 
 	const filename = options.filename || contentDispositionFilename;
-	fileDownload( response.data, filename );
+	(<any> fileDownload)( response.data, filename );
 }
 
 /**
