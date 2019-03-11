@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.3.3...v1.4.0) (2019-03-11)
+
+
+### Features
+
+* Added errorHandler and fixed default error handler on vue-submit ([8dbe2f3](https://gitlab.com/renanhangai_/vue/vue-submit/commit/8dbe2f3))
+
+
+
 <a name="1.3.3"></a>
 ## [1.3.3](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.3.2...v1.3.3) (2019-02-25)
 
