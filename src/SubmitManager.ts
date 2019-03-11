@@ -27,7 +27,8 @@ export class SubmitManager {
 
 		const compat: any = opt.compat || {};
 		return {
-			confirmation:  opt.confirmation || defaults.confirmation,
+			errorHandler: opt.errorHandler || function( vm: any, err: any ) { throw err; },
+			confirmation: opt.confirmation || defaults.confirmation,
 			notify:  opt.notify || defaults.notify,
 			notifyDefaultsError:  opt.notifyDefaultsError || defaults.notifyDefaultsError,
 			notifyDefaultsErrorValidation:  opt.notifyDefaultsErrorValidation || defaults.notifyDefaultsErrorValidation,
@@ -66,6 +67,11 @@ export class SubmitManager {
 			return;
 		requestData = this.options.compat.assign( {}, this.options.requestDefaults, requestData );
 		return request.call( vm, vm, requestData );
+	}
+
+	errorHandler( vm: any, err: any ) {
+		if ( err )
+			return this.options.errorHandler!.call( null, vm, err );
 	}
 
 	captureException( vm: any, err: any ) {

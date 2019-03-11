@@ -48,11 +48,15 @@ export class Submission {
 			.then( () => {
 				if ( !skipped )
 					return this.notify( err );
-			} ).catch( () => null )
+			} )
+			.catch( () => null )
 			.then( () => this.loaderFinish( err ) ).catch( () => null )
 			.then( () => {
 				this.vm.$set( this.vm.$data.$submitting, this.name, false );
 				this.vm.$set( this.vm.$data.$submitError, this.name, err );
+			})
+			.then( () => {
+				return this.parent.errorHandler( this.vm, err );
 			});
 	}
 

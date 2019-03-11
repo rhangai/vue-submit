@@ -1,5 +1,6 @@
 export type SubmitOptionsFramework = "buefy";
 
+export type ErrorHandler = ( vm: any, error: any ) => any;
 export type SubmitOptionsSuccessCallback = ( result: any ) => any;
 
 export interface SubmitOptions {
@@ -28,6 +29,8 @@ export interface SubmitManagerCompatOptions {
 export interface SubmitManagerConstructorOptions {
 	//! Framework to set
 	framework?: SubmitOptionsFramework,
+	//! Error handler for unknown errors
+	errorHandler?: ErrorHandler,
 	//! Confirmation function to be called on the confirmation step
 	confirmation?: ( vm: any, confirmationData: any ) => any,
 	confirmationDefaults?: any,
