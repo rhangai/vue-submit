@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.1"></a>
+## [1.4.1](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.4.0...v1.4.1) (2019-03-16)
+
+
+### Bug Fixes
+
+* Default error handler changed to console.error ([1c3f7bf](https://gitlab.com/renanhangai_/vue/vue-submit/commit/1c3f7bf))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.3.3...v1.4.0) (2019-03-11)
 
