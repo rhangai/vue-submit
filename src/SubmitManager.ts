@@ -27,7 +27,7 @@ export class SubmitManager {
 
 		const compat: any = opt.compat || {};
 		return {
-			errorHandler: opt.errorHandler || function( vm: any, err: any ) { throw err; },
+			errorHandler: opt.errorHandler || function( vm: any, err: any ) { console.error( err ); },
 			confirmation: opt.confirmation || defaults.confirmation,
 			notify:  opt.notify || defaults.notify,
 			notifyDefaultsError:  opt.notifyDefaultsError || defaults.notifyDefaultsError,
