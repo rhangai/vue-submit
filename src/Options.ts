@@ -1,7 +1,8 @@
 export type SubmitOptionsFramework = "buefy";
 
 export type ErrorHandler = ( vm: any, error: any ) => any;
-export type SubmitOptionsSuccessCallback = ( result: any ) => any;
+export type SubmitOptionsSuccessCallback = (result: any) => any;
+export type SubmitOptionsSetupCallback = (vm: any) => any;
 
 export interface SubmitOptions {
 	//! The validator to use (vuelidate compatible)
@@ -12,6 +13,8 @@ export interface SubmitOptions {
 	forever?:   Boolean,
 	//! Override the request functions
 	request?: false | (( vm: any, requestData: any ) => any),
+	//! Function to be called right before the request
+	setup?: SubmitOptionsSetupCallback,
 	//! Function to be called on success
 	success?: SubmitOptionsSuccessCallback | string | object,
 	//! Confirmation object passed to constructor

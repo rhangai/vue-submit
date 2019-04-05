@@ -110,7 +110,8 @@ export class Submission {
 	 * Run the request
 	 */
 	requestRun() {
-		return this.parent.doRequest(this.vm, this.options, this.options);
+		return Promise.resolve( this.options.setup && this.options.setup.call(null, this.vm) )
+			.then(() => this.parent.doRequest(this.vm, this.options, this.options) );
 	}
 	/**
 	 * Run the success
