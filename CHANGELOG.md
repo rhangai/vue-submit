@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0"></a>
+# [1.5.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.4.1...v1.5.0) (2019-04-05)
+
+
+### Features
+
+* Added setup method for the submit. ([a075f81](https://gitlab.com/renanhangai_/vue/vue-submit/commit/a075f81))
+
+
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.4.0...v1.4.1) (2019-03-16)
 
