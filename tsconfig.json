@@ -1,11 +1,9 @@
 {
 	"compilerOptions": {
-		"declaration": true,
 		"lib": ["es6", "dom"],
 		"outDir": "./dist/",
 		"module": "commonjs",
 		"target": "es5",
-		"jsx": "react",
-		"allowJs": true
+		"jsx": "react"
 	}
   }
