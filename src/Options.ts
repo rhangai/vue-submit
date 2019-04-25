@@ -1,6 +1,8 @@
+import { SubmitDownloadOptions } from "./util/Download";
+
 export type SubmitOptionsFramework = "buefy";
 
-export type ErrorHandler = ( vm: any, error: any ) => any;
+export type SubmitErrorHandler = ( vm: any, error: any ) => any;
 export type SubmitOptionsSuccessCallback = (result: any) => any;
 export type SubmitOptionsSetupCallback = (vm: any) => any;
 
@@ -22,6 +24,8 @@ export interface SubmitOptions {
 	//! Notify options on success and errors
 	notify?: any,
 	notifyError?: any,
+	//! Options for downloading files
+	download: SubmitDownloadOptions | string | boolean;
 };
 
 export interface SubmitManagerCompatOptions {
@@ -33,7 +37,7 @@ export interface SubmitManagerConstructorOptions {
 	//! Framework to set
 	framework?: SubmitOptionsFramework,
 	//! Error handler for unknown errors
-	errorHandler?: ErrorHandler,
+	errorHandler?: SubmitErrorHandler,
 	//! Confirmation function to be called on the confirmation step
 	confirmation?: ( vm: any, confirmationData: any ) => any,
 	confirmationDefaults?: any,
