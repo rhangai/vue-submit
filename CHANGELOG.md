@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.5.0...v2.0.0) (2019-04-25)
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v1.4.1...v1.5.0) (2019-04-05)
 
