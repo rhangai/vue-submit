@@ -1,32 +1,9 @@
-import { SubmitDownloadOptions } from "./util/Download";
+import { SubmitOptions, SubmitOptionsFramework, SubmitDownloadOptions } from "../index.d";
 
-export type SubmitOptionsFramework = "buefy";
+
+export { SubmitOptions, SubmitOptionsFramework, SubmitDownloadOptions };
 
 export type SubmitErrorHandler = ( vm: any, error: any ) => any;
-export type SubmitOptionsSuccessCallback = (result: any) => any;
-export type SubmitOptionsSetupCallback = (vm: any) => any;
-
-export interface SubmitOptions {
-	//! The validator to use (vuelidate compatible)
-	validator?: any,
-	//! Set to false if you do not want to trigger the loading bar from nuxt
-	loading?:   Boolean,
-	//! Set to true if you never want to return from the submit in case of success.
-	forever?:   Boolean,
-	//! Override the request functions
-	request?: false | (( vm: any, requestData: any ) => any),
-	//! Function to be called right before the request
-	setup?: SubmitOptionsSetupCallback,
-	//! Function to be called on success
-	success?: SubmitOptionsSuccessCallback | string | object,
-	//! Confirmation object passed to constructor
-	confirmation?: any,
-	//! Notify options on success and errors
-	notify?: any,
-	notifyError?: any,
-	//! Options for downloading files
-	download: SubmitDownloadOptions | string | boolean;
-};
 
 export interface SubmitManagerCompatOptions {
 	Promise?: PromiseConstructor,
