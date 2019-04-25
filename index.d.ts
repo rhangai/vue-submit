@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { AxiosRequestConfig } from 'axios';
 
 /// Framework
 export type SubmitOptionsFramework = "buefy";
@@ -34,7 +35,7 @@ export type SubmitOptions = {
 	//! Notify options on success and errors
 	notify?: any,
 	notifyError?: any,
-}
+};
 
 /// Extends the vue type to use the submit
 declare module 'vue/types/vue' {
@@ -45,7 +46,7 @@ declare module 'vue/types/vue' {
 		 * @param name Name of the key to submit
 		 * @param options Options passed through the request function 
 		 */
-		$submit(name: string, options: SubmitOptions): Promise<any>;
+		$submit(name: string, options: SubmitOptions & AxiosRequestConfig): Promise<any>;
 		/**
 		 * Submitting object
 		 */
