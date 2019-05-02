@@ -17,7 +17,7 @@ export type SubmitOptionsSetupCallback = (vm: any) => any;
 /// Options for submit
 export type SubmitOptions = {
 	//! Options for downloading files
-	download: SubmitDownloadOptions | string | boolean;
+	download?: SubmitDownloadOptions | string | boolean;
 	//! The validator to use (vuelidate compatible)
 	validator?: any,
 	//! Set to false if you do not want to trigger the loading bar from nuxt
