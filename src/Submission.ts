@@ -161,6 +161,11 @@ export class Submission {
 			notifyError = {};
 		}
 
+		// Do nothing when notifyError is false
+		if (notifyError === false)
+			return;
+		notifyError = notifyError || {};
+
 		// Get the error defaults
 		let notifyErrorDefaults: any = validationError ? this.parent.options.notifyDefaultsErrorValidation : this.parent.options.notifyDefaultsError;
 		if ( typeof(notifyErrorDefaults) === 'function' )
