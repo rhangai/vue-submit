@@ -1,6 +1,6 @@
 {
   "name": "@renanhangai/vue-submit",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Vue submit helper",
   "main": "dist/vue-submit.js",
   "types": "./index.d.ts",
