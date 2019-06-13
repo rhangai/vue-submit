@@ -37,6 +37,14 @@ export type SubmitOptions = {
 	notifyError?: any,
 };
 
+/// Vue submitinterface
+export interface VueSubmit {
+	/// VueSubmit interface
+	(name: string, options: SubmitOptions & AxiosRequestConfig): Promise<any>;
+	/// Serialize a data into a form data
+	serializeFormData(data: any): FormData;
+}
+
 /// Extends the vue type to use the submit
 declare module 'vue/types/vue' {
 	interface Vue {
@@ -46,7 +54,7 @@ declare module 'vue/types/vue' {
 		 * @param name Name of the key to submit
 		 * @param options Options passed through the request function 
 		 */
-		$submit(name: string, options: SubmitOptions & AxiosRequestConfig): Promise<any>;
+		$submit: VueSubmit;
 		/**
 		 * Submitting object
 		 */
