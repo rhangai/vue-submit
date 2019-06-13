@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.1"></a>
+## [2.1.1](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.1.0...v2.1.1) (2019-06-13)
+
+
+### Bug Fixes
+
+* Validator when function was not being called on the vm ([4d1c3bb](https://gitlab.com/renanhangai_/vue/vue-submit/commit/4d1c3bb))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.0.3...v2.1.0) (2019-06-13)
 
