@@ -91,11 +91,11 @@ export class Submission {
 	 * Check if the validator is valid
 	 */
 	private async isValidatorValid(validator: any): Promise<boolean> {
+		if (typeof (validator) === 'function')
+			validator = validator.call(this.vm, this.vm);
 		if (!validator)
 			return true;
-		if (typeof (validator) === 'function')
-			validator = validator.call(this);
-		if (Array.isArray(validator)) {
+		else if (Array.isArray(validator)) {
 			let isAllValidatorValid = true;
 			for (let i = 0, len = validator.length; i<len; ++i) {
 				const isValid = await this.isValidatorValid(validator[i]);
