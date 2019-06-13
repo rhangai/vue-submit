@@ -80,25 +80,40 @@ export class Submission {
 	}
 
 	/**
-	 * Validate the parameter
+	 * Validate
 	 */
-	validatorRun() {
-		if ( !this.options.validator )
-			return;
-
-		let validator: any = this.options.validator;
-		if ( typeof(validator) === 'function' )
-			validator = validator.call( this );
-
-		if ( validator === false ) {
+	async validatorRun() {
+		const isValid = await this.isValidatorValid(this.options.validator);
+		if ( !isValid )
 			throw new ValidatorError;
-		} else if( validator === true ) {
-		} else if ( validator.$touch ) {
+	}
+	/**
+	 * Check if the validator is valid
+	 */
+	private async isValidatorValid(validator: any): Promise<boolean> {
+		if (!validator)
+			return true;
+		if (typeof (validator) === 'function')
+			validator = validator.call(this);
+		if (Array.isArray(validator)) {
+			let isAllValidatorValid = true;
+			for (let i = 0, len = validator.length; i<len; ++i) {
+				const isValid = await this.isValidatorValid(validator[i]);
+				if (!isValid ) 
+					isAllValidatorValid = false;
+			}
+			return isAllValidatorValid;
+		} else if (validator === false) {
+			return false;
+		} else if (validator === true) {
+			return true;
+		} else if (validator.$touch) {
 			validator.$touch();
-			if ( validator.$invalid )
-				throw new ValidatorError;
-		} else if ( validator )
-			throw new Error( "Invalid type of validator" );
+			if (validator.$invalid)
+				return false;
+		} else if (validator)
+			throw new Error("Invalid type of validator");
+		return true;
 	}
 	/**
 	 * Confirm the action somehow
