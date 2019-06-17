@@ -1,4 +1,6 @@
 import { SubmitManager } from "./SubmitManager";
+import { VueSubmitPlugin } from "./Plugin";
 export { AxiosDownload } from './util/Download';
 
-export default SubmitManager;
+export { SubmitManager };
+export default VueSubmitPlugin;
