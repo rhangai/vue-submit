@@ -157,36 +157,43 @@ export class Submission {
 			.then( foreverCallback || noop );
 	}
 	/**
-	 * Notify
+	 * Notify the submission if something went wrong
 	 */
 	notify( err: Error | null ) {
 		// Notify the success state
 		if ( !err ) {
-			this.parent.doNotify( this.vm, this.options, this.options.notify );
-			return;
-		}
-		const errorContext = this.createErrorContext( err );
-
-		// Normalize error data
-		let notifyError: any = this.options.notifyError;
-		if ( typeof(notifyError) === 'function' ) {
-			notifyError = notifyError.call(null, errorContext);
-		} else if ( errorContext.validationError ) {
-			notifyError = {};
+			return this.parent.doNotify( this.vm, this.options, this.options.notify );
 		}
 
-		// Do nothing when notifyError is false
-		if (notifyError === false)
-			return;
-		notifyError = notifyError || {};
-
-		// Get the error defaults
-		let notifyErrorDefaults: any = errorContext.validationError ? this.parent.options.notifyDefaultsErrorValidation : this.parent.options.notifyDefaultsError;
-		if ( typeof(notifyErrorDefaults) === 'function' )
-			notifyErrorDefaults = notifyErrorDefaults.call( null, errorContext );
-
-		// Notify the error
-		this.parent.doNotify( this.vm, this.options, notifyError, notifyErrorDefaults );
+		// Build the error
+		let errorContext: any;
+		let notifyError: any;
+		let notifyErrorDefaults: any;
+		return this.compat.Promise.resolve()
+			.then( () => this.createErrorContext( err ) )
+			.then( ( r ) => errorContext = r )
+			.then( () => {
+				// Get the error object
+				let notifyError: any = this.options.notifyError;
+				if ( typeof(notifyError) === 'function' ) {
+					notifyError = notifyError.call(null, errorContext);
+				} else if ( errorContext.validationError ) {
+					notifyError = {};
+				}
+				return notifyError;
+			})
+			.then( ( r ) => notifyError = r)
+			.then( () => {
+				// Get the default error object
+				let notifyErrorDefaults: any = errorContext.validationError ? this.parent.options.notifyDefaultsErrorValidation : this.parent.options.notifyDefaultsError;
+				if ( typeof(notifyErrorDefaults) === 'function' ) {
+					notifyErrorDefaults = notifyErrorDefaults.call( null, errorContext )
+				}
+				return notifyErrorDefaults;
+			}).then( (r ) => notifyErrorDefaults = r )
+			.then( () => {
+				return this.parent.doNotify( this.vm, this.options, notifyError, notifyErrorDefaults );
+			});
 	}
 
 	/**
