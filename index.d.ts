@@ -14,6 +14,14 @@ export type SubmitDownloadOptions = {
 export type SubmitOptionsSuccessCallback = (result: any) => any;
 export type SubmitOptionsSetupCallback = (vm: any) => any;
 
+/// Error context on notify
+export type SubmitErrorContext = {
+	error: any;
+	response: any;
+	data: any;
+	validationError: boolean;
+};
+
 /// Options for submit
 export type SubmitOptions = {
 	//! Options for downloading files
@@ -34,7 +42,7 @@ export type SubmitOptions = {
 	confirmation?: any,
 	//! Notify options on success and errors
 	notify?: any,
-	notifyError?: any,
+	notifyError?: ((errorContext: SubmitErrorContext) => any) | { [key: string]: any } | string | null,
 };
 
 /// Vue submitinterface

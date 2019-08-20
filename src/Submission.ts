@@ -170,7 +170,7 @@ export class Submission {
 		// Normalize error data
 		let notifyError: any = this.options.notifyError;
 		if ( typeof(notifyError) === 'function' ) {
-			notifyError = this.options.notifyError.call(null, errorContext);
+			notifyError = notifyError.call(null, errorContext);
 		} else if ( errorContext.validationError ) {
 			notifyError = {};
 		}
