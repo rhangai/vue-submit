@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.1.2...v2.2.0) (2019-08-20)
+
+
+### Bug Fixes
+
+* Type of notifyError ([8a95041](https://gitlab.com/renanhangai_/vue/vue-submit/commit/8a95041))
+
+
+### Features
+
+* Added async on notify and notifyError ([799f372](https://gitlab.com/renanhangai_/vue/vue-submit/commit/799f372))
+* Added new error context on notifyError ([c413489](https://gitlab.com/renanhangai_/vue/vue-submit/commit/c413489))
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.1.1...v2.1.2) (2019-06-13)
 
