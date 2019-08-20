@@ -165,14 +165,13 @@ export class Submission {
 			this.parent.doNotify( this.vm, this.options, this.options.notify );
 			return;
 		}
-		const validationError = ( err instanceof ValidatorError );
-		const errorContext = { error: err, validationError };
+		const errorContext = this.createErrorContext( err );
 
 		// Normalize error data
 		let notifyError: any = this.options.notifyError;
 		if ( typeof(notifyError) === 'function' ) {
 			notifyError = this.options.notifyError.call(null, errorContext);
-		} else if ( validationError ) {
+		} else if ( errorContext.validationError ) {
 			notifyError = {};
 		}
 
@@ -182,12 +181,22 @@ export class Submission {
 		notifyError = notifyError || {};
 
 		// Get the error defaults
-		let notifyErrorDefaults: any = validationError ? this.parent.options.notifyDefaultsErrorValidation : this.parent.options.notifyDefaultsError;
+		let notifyErrorDefaults: any = errorContext.validationError ? this.parent.options.notifyDefaultsErrorValidation : this.parent.options.notifyDefaultsError;
 		if ( typeof(notifyErrorDefaults) === 'function' )
 			notifyErrorDefaults = notifyErrorDefaults.call( null, errorContext );
 
 		// Notify the error
 		this.parent.doNotify( this.vm, this.options, notifyError, notifyErrorDefaults );
+	}
+
+	/**
+	 * Create the error context
+	 */
+	createErrorContext( error: any ) {
+		const validationError = ( error instanceof ValidatorError );
+		const response = error.response || null;
+		const data = (response ? response.data : null) || null;
+		return { error: error, response, data, validationError };
 	}
 
 };
