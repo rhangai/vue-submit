@@ -18,7 +18,14 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 					submitManager.options.confirmationDefaults.call( vm, confirmationData ) :
 					submitManager.options.confirmationDefaults;
 
-				let dialog = vm.$dialog.confirm({
+				const dialogManager = vm.$buefy ? vm.$buefy.dialog : vm.$dialog;
+				if ( !dialogManager ) {
+					console.error( "No buefy $buefy.dialog or $dialog found" );
+					resolve();
+					return;
+				}
+
+				let dialog = dialogManager.confirm({
 					title: "Confirmação",
 					confirmText: "OK",
 					cancelText: "Cancelar",
@@ -51,7 +58,13 @@ export function createDefaultsBuefy( submitManager: SubmitManager, parentDefault
 			const notifyGlobalDefaults = typeof(submitManager.options.notifyDefaults) === 'function' ?
 				submitManager.options.notifyDefaults.call( vm, notifyData ) :
 				submitManager.options.notifyDefaults;
-			vm.$toast.open({ 
+
+			const toastManager = vm.$buefy ? vm.$buefy.toast : vm.$toast;
+			if ( !toastManager ) {
+				console.error( "No buefy $buefy.toast or $toast found" );
+				return;
+			}
+			toastManager.open({ 
 				queue: false,
 				...notifyGlobalDefaults, 
 				...notifyDefaults,

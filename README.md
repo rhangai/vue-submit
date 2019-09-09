@@ -55,3 +55,12 @@ this.$submit( "name", {
 });
 ```
 
+### Capturing errors ###
+
+```js
+this.$submit( "name", {
+	notifyError({ data }) {
+		// do something with the data
+	}
+})
+```
