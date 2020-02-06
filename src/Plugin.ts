@@ -7,7 +7,7 @@ export class VueSubmitPlugin {
 	 * Create the VueSubmitInterface
 	 */
 	private static createSubmitInterface(submitManager: SubmitManager): VueSubmit {
-		const vueSubmit = function (name: string, options: any) {
+		const vueSubmit = function(name: string, options: any) {
 			return submitManager.submit(this, name, options);
 		};
 		/// Create the serializer
@@ -24,12 +24,16 @@ export class VueSubmitPlugin {
 					let itemKey = parentKey ? `${parentKey}[${i}]` : `${i}`;
 					formDataAppend(formData, itemKey, item);
 				}
+			} else if (value === true) {
+				formData.append(parentKey, "1");
+			} else if (value === false) {
+				formData.append(parentKey, "0");
 			} else {
 				formData.append(parentKey, value);
 			}
 		};
 		vueSubmit.serializeFormData = (data: any) => {
-			const formData = new FormData;
+			const formData = new FormData();
 			formDataAppend(formData, null, data);
 			return formData;
 		};
@@ -38,38 +42,37 @@ export class VueSubmitPlugin {
 
 	/**
 	 * Install the vue application
-	 * 
-	 * @param vue 
-	 * @param options 
+	 *
+	 * @param vue
+	 * @param options
 	 */
 	static install(vue, options: any) {
-		if (typeof (options) === 'string')
-			options = { framework: options };
+		if (typeof options === "string") options = { framework: options };
 
 		const submitManager = new SubmitManager(vue, options);
 		Object.defineProperty(vue.prototype, "$submit", {
 			configurable: true,
-			value: this.createSubmitInterface(submitManager),
+			value: this.createSubmitInterface(submitManager)
 		});
 		Object.defineProperty(vue.prototype, "$submitting", {
 			configurable: true,
 			get() {
 				return this.$data.$submitting;
-			},
+			}
 		});
 		Object.defineProperty(vue.prototype, "$submitError", {
 			configurable: true,
 			get() {
 				return this.$data.$submitError;
-			},
+			}
 		});
 		vue.mixin({
 			data() {
 				return {
 					$submitting: {},
-					$submitError: {},
+					$submitError: {}
 				};
-			},
+			}
 		});
 	}
-};
+}

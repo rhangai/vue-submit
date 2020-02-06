@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import { AxiosRequestConfig } from 'axios';
+import Vue from "vue";
+import { AxiosRequestConfig } from "axios";
 
 /// Framework
 export type SubmitOptionsFramework = "buefy";
@@ -8,7 +8,7 @@ export type SubmitOptionsFramework = "buefy";
 export type SubmitDownloadOptions = {
 	force?: boolean;
 	filename: string;
-}
+};
 
 /// Callback types
 export type SubmitOptionsSuccessCallback = (result: any) => any;
@@ -24,25 +24,31 @@ export type SubmitErrorContext = {
 
 /// Options for submit
 export type SubmitOptions = {
+	//! Axios instance to use, defaults to this.$axios
+	axios?: any;
 	//! Options for downloading files
 	download?: SubmitDownloadOptions | string | boolean;
 	//! The validator to use (vuelidate compatible)
-	validator?: any,
+	validator?: any;
 	//! Set to false if you do not want to trigger the loading bar from nuxt
-	loading?:   Boolean,
+	loading?: Boolean;
 	//! Set to true if you never want to return from the submit in case of success.
-	forever?:   Boolean,
+	forever?: Boolean;
 	//! Override the request functions
-	request?: false | (( vm: any, requestData: any ) => any),
+	request?: false | ((vm: any, requestData: any) => any);
 	//! Function to be called right before the request
-	setup?: SubmitOptionsSetupCallback,
+	setup?: SubmitOptionsSetupCallback;
 	//! Function to be called on success
-	success?: SubmitOptionsSuccessCallback | string | object,
+	success?: SubmitOptionsSuccessCallback | string | object;
 	//! Confirmation object passed to constructor
-	confirmation?: any,
+	confirmation?: any;
 	//! Notify options on success and errors
-	notify?: any,
-	notifyError?: ((errorContext: SubmitErrorContext) => any) | { [key: string]: any } | string | null,
+	notify?: any;
+	notifyError?:
+		| ((errorContext: SubmitErrorContext) => any)
+		| { [key: string]: any }
+		| string
+		| null;
 };
 
 /// Vue submitinterface
@@ -54,13 +60,13 @@ export interface VueSubmit {
 }
 
 /// Extends the vue type to use the submit
-declare module 'vue/types/vue' {
+declare module "vue/types/vue" {
 	interface Vue {
 		/**
 		 * Submit a new ajax request
-		 * 
+		 *
 		 * @param name Name of the key to submit
-		 * @param options Options passed through the request function 
+		 * @param options Options passed through the request function
 		 */
 		$submit: VueSubmit;
 		/**
