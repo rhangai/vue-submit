@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.2.1...v2.3.0) (2020-02-06)
+
+
+### Features
+
+* Added axios option on request to allow the use of another axios instance ([bc62433](https://gitlab.com/renanhangai_/vue/vue-submit/commit/bc62433))
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.2.0...v2.2.1) (2019-09-09)
 
