@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 <a name="1.0.0"></a>
+# 1.0.0 (2020-03-06)
+
+
+### Bug Fixes
+
+* $submitting prop was not being set ([d78acfd](https://github.com/rhangai/vue-submit/commit/d78acfd))
+* Default error handler changed to console.error ([1c3f7bf](https://github.com/rhangai/vue-submit/commit/1c3f7bf))
+* Do not notify sentry when there is no exception ([d6b4031](https://github.com/rhangai/vue-submit/commit/d6b4031))
+* Error.ts was using .js ([fdd4268](https://github.com/rhangai/vue-submit/commit/fdd4268))
+* Missing path import ([c4dc18d](https://github.com/rhangai/vue-submit/commit/c4dc18d))
+* new Buefy toast as dialog options ([4700287](https://github.com/rhangai/vue-submit/commit/4700287))
+* Notify error was not being called ([8e21ac7](https://github.com/rhangai/vue-submit/commit/8e21ac7))
+* Npmignore on nuxt files ([d69d5f1](https://github.com/rhangai/vue-submit/commit/d69d5f1))
+* Problems with validation error and instanceof ([e9e2357](https://github.com/rhangai/vue-submit/commit/e9e2357))
+* Removed console.log ([d300ec1](https://github.com/rhangai/vue-submit/commit/d300ec1))
+* Submission and notification when confirmation is skipped ([a305495](https://github.com/rhangai/vue-submit/commit/a305495))
+* Success callback was not being called with result ([f9b4933](https://github.com/rhangai/vue-submit/commit/f9b4933))
+* Type of notifyError ([8a95041](https://github.com/rhangai/vue-submit/commit/8a95041))
+* Typo on notifyDefaultsError ([10d19c1](https://github.com/rhangai/vue-submit/commit/10d19c1))
+* Validator when function was not being called on the vm ([4d1c3bb](https://github.com/rhangai/vue-submit/commit/4d1c3bb))
+
+
+### Features
+
+* $submit now accepts validator as an array ([3ce20a9](https://github.com/rhangai/vue-submit/commit/3ce20a9))
+* Added async on notify and notifyError ([799f372](https://github.com/rhangai/vue-submit/commit/799f372))
+* Added axios option on request to allow the use of another axios instance ([bc62433](https://github.com/rhangai/vue-submit/commit/bc62433))
+* Added AxiosDownload export ([770b024](https://github.com/rhangai/vue-submit/commit/770b024))
+* Added errorHandler and fixed default error handler on vue-submit ([8dbe2f3](https://github.com/rhangai/vue-submit/commit/8dbe2f3))
+* Added new error context on notifyError ([c413489](https://github.com/rhangai/vue-submit/commit/c413489))
+* Added sentry support ([8d3376c](https://github.com/rhangai/vue-submit/commit/8d3376c))
+* Added setup method for the submit. ([a075f81](https://github.com/rhangai/vue-submit/commit/a075f81))
+* Fixed module resolve on nuxt ([0bba1f3](https://github.com/rhangai/vue-submit/commit/0bba1f3))
+* New notifyError function option ([4470af7](https://github.com/rhangai/vue-submit/commit/4470af7))
+
+
+
+<a name="1.0.0"></a>
 # [1.0.0](https://github.com/rhangai/vue-submit/compare/v2.3.0...v1.0.0) (2020-03-06)
 
 
