@@ -1,11 +1,11 @@
 {
-  "name": "@renanhangai/vue-submit",
+  "name": "@rhangai/vue-submit",
   "version": "2.3.0",
   "description": "Vue submit helper",
   "main": "dist/vue-submit.js",
   "types": "./index.d.ts",
-  "repository": "https://gitlab.com/renanhangai_/vue/vue-submit.git",
-  "author": "renanhangai <hangai.renan@gmail.com>",
+  "repository": "git@github.com:rhangai/vue-submit.git",
+  "author": "rhangai <hangai.renan@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "js-file-download": "^0.4.4"
@@ -24,9 +24,5 @@
     "build:cjs": "webpack && NODE_ENV=production webpack",
     "build": "yarn run build:umd && yarn run build:cjs",
     "prepublish": "yarn run build"
-  },
-  "peerDependencies": {
-    "axios": "^0.18.0",
-    "vue": "*"
   }
 }
