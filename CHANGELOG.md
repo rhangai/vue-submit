@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/rhangai/vue-submit/compare/v2.3.0...v1.0.0) (2020-03-06)
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://gitlab.com/renanhangai_/vue/vue-submit/compare/v2.2.1...v2.3.0) (2020-02-06)
 
