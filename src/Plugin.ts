@@ -1,78 +1,41 @@
-import { VueSubmit } from "..";
-import { isPlainObject } from "./util/isObject";
-import { SubmitManager } from "./SubmitManager";
+import Vue, { VueConstructor } from "vue";
+import { VueSubmitOptions, VueSubmitManager } from "./VueSubmit";
 
+function defineProperty(proto: any, name: string, getter: (self: any) => unknown) {
+	Object.defineProperty(proto, name, {
+		configurable: true,
+		writable: false,
+		get() {
+			const value = getter(this);
+			Object.defineProperty(this, name, {
+				configurable: false,
+				writable: false,
+				value
+			});
+			return value;
+		}
+	});
+}
 export class VueSubmitPlugin {
-	/**
-	 * Create the VueSubmitInterface
-	 */
-	private static createSubmitInterface(submitManager: SubmitManager): VueSubmit {
-		const vueSubmit = function(name: string, options: any) {
-			return submitManager.submit(this, name, options);
+	static createSubmit(vue: VueConstructor, vm: Vue) {
+		const instance = new VueSubmitManager(vue, vm);
+		const submit = function(name: string, options: VueSubmitOptions) {
+			return instance.submit(name, options);
 		};
-		/// Create the serializer
-		const formDataAppend = (formData: FormData, parentKey: string, value: any) => {
-			if (isPlainObject(value)) {
-				for (const key in value) {
-					const item = value[key];
-					let itemKey = parentKey ? `${parentKey}[${key}]` : key;
-					formDataAppend(formData, itemKey, item);
-				}
-			} else if (Array.isArray(value)) {
-				for (let i = 0; i < value.length; ++i) {
-					const item = value[i];
-					let itemKey = parentKey ? `${parentKey}[${i}]` : `${i}`;
-					formDataAppend(formData, itemKey, item);
-				}
-			} else if (value === true) {
-				formData.append(parentKey, "1");
-			} else if (value === false) {
-				formData.append(parentKey, "0");
-			} else {
-				formData.append(parentKey, value);
-			}
-		};
-		vueSubmit.serializeFormData = (data: any) => {
-			const formData = new FormData();
-			formDataAppend(formData, null, data);
-			return formData;
-		};
-		return vueSubmit;
+		submit.$instance = instance;
+		return submit;
 	}
-
-	/**
-	 * Install the vue application
-	 *
-	 * @param vue
-	 * @param options
-	 */
-	static install(vue, options: any) {
-		if (typeof options === "string") options = { framework: options };
-
-		const submitManager = new SubmitManager(vue, options);
-		Object.defineProperty(vue.prototype, "$submit", {
-			configurable: true,
-			value: this.createSubmitInterface(submitManager)
+	static install(vue: VueConstructor): void {
+		defineProperty(vue.prototype, "$submit", function(self: Vue) {
+			return VueSubmitPlugin.createSubmit(vue, this);
 		});
-		Object.defineProperty(vue.prototype, "$submitting", {
-			configurable: true,
-			get() {
-				return this.$data.$submitting;
-			}
+		defineProperty(vue.prototype, "$submitting", function(self: Vue) {
+			// @ts-ignore
+			return self.$submit.$instance.submitting;
 		});
-		Object.defineProperty(vue.prototype, "$submitError", {
-			configurable: true,
-			get() {
-				return this.$data.$submitError;
-			}
-		});
-		vue.mixin({
-			data() {
-				return {
-					$submitting: {},
-					$submitError: {}
-				};
-			}
+		defineProperty(vue.prototype, "$submitErrors", function(self: Vue) {
+			// @ts-ignore
+			return self.$submit.$instance.errors;
 		});
 	}
 }

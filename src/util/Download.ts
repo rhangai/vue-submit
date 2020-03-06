@@ -23,7 +23,7 @@ export async function AxiosDownload(axiosInstance: any, options: any): Promise<v
 		throw new Error("Invalid file download");
 
 	const filename = download.filename || contentDispositionFilename;
-	(<any>fileDownload)(response.data, filename);
+	fileDownload(response.data, filename);
 }
 
 /**

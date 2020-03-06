@@ -6,6 +6,7 @@ import pluginBabel from "rollup-plugin-babel";
 export default [
 	{
 		input: "src/index.ts",
+		externals: ["vue"],
 		output: {
 			file: "dist/vue-submit.js",
 			format: "esm"
@@ -19,6 +20,7 @@ export default [
 	},
 	{
 		input: "src/index.ts",
+		externals: ["vue"],
 		output: {
 			name: "VueSubmit",
 			file: "dist/vue-submit.umd.js",
