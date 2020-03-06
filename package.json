@@ -7,22 +7,23 @@
   "repository": "git@github.com:rhangai/vue-submit.git",
   "author": "rhangai <hangai.renan@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "js-file-download": "^0.4.4"
-  },
+  "browserslist": "> 0.25%, not dead, ie >= 11",
+  "dependencies": {},
   "devDependencies": {
-    "axios": "^0.19.0",
-    "standard-version": "^4.4.0",
-    "ts-loader": "^5.3.1",
-    "typescript": "^3.1.6",
-    "vue": "*",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2"
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-typescript": "^4.0.0",
+    "axios": "^0.19.2",
+    "js-file-download": "^0.4.10",
+    "rollup": "^2.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "standard-version": "^7.1.0",
+    "tslib": "^1.11.1",
+    "typescript": "^3.8.3"
   },
   "scripts": {
-    "build:umd": "webpack --output-library-target umd --output-filename vue-submit.umd.dev.js && NODE_ENV=production webpack --output-library-target umd --output-filename vue-submit.umd.js ",
-    "build:cjs": "webpack && NODE_ENV=production webpack",
-    "build": "yarn run build:umd && yarn run build:cjs",
-    "prepublish": "yarn run build"
+    "build": "rollup -c rollup.config.js"
   }
 }
