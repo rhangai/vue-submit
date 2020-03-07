@@ -1,6 +1,6 @@
 import Vue, { VueConstructor } from "vue";
 import { VueSubmitManager } from "./VueSubmitManager";
-import { VueSubmitCallback, VueSubmitOptions, VueSubmitPluginOptions } from "../types/vue-submit";
+import { VueSubmitFunction, VueSubmitOptions, VueSubmitPluginOptions } from "../types/vue-submit";
 import { serializeFormData } from "./util/SerializeFormData";
 
 function defineProperty(proto: any, name: string, getter: (self: any) => unknown) {
@@ -22,7 +22,7 @@ export class VueSubmitPlugin {
 		vue: VueConstructor,
 		vm: Vue,
 		pluginOptions: VueSubmitPluginOptions
-	): VueSubmitCallback {
+	): VueSubmitFunction {
 		const instance = new VueSubmitManager(vue, vm, pluginOptions);
 		const submit = function(name: string, options: VueSubmitOptions) {
 			return instance.submit(name, options);

@@ -29,7 +29,7 @@ export class VueSubmitManager {
 	 * @param key
 	 * @param options
 	 */
-	async submit(key: string, options: VueSubmitOptions): Promise<VueSubmitResult | null> {
+	async submit(key: string, options: VueSubmitOptions): Promise<void> {
 		if (this.vm.$data.$submitting[key]) {
 			throw new Error(`Already submitting`);
 		}
@@ -43,15 +43,15 @@ export class VueSubmitManager {
 		);
 		this.submissions[key] = submission;
 		try {
-			this.vm.$set(this.vm.$submitErrors, name, null);
-			this.vm.$set(this.vm.$submitting, name, true);
+			this.vm.$set(this.vm.$submitErrors, key, null);
+			this.vm.$set(this.vm.$submitting, key, true);
 			return await submission.submit();
 		} catch (error) {
-			this.vm.$set(this.vm.$submitErrors, name, error);
+			this.vm.$set(this.vm.$submitErrors, key, error);
 			throw error;
 		} finally {
 			this.submissions[key] = null;
-			this.vm.$set(this.vm.$submitting, name, false);
+			this.vm.$set(this.vm.$submitting, key, false);
 		}
 	}
 }

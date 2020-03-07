@@ -1,9 +1,9 @@
 import Vue from "vue";
-import { VueSubmitCallback } from "./vue-submit";
+import { VueSubmitFunction } from "./vue-submit";
 
 declare module "vue/types/vue" {
 	interface Vue {
-		$submit?: VueSubmitCallback;
+		$submit?: VueSubmitFunction;
 		$submitting: Record<string, boolean>;
 		$submitErrors: Record<string, Error>;
 	}
