@@ -1,6 +1,46 @@
-# vue-submit
+# @rhangai/vue-submit
 
 Helper for requests with confirmation, notification and loading status.
+
+### Basic usage
+
+```vue
+<template>
+	<div>
+		<div>Name <input v-model="form.name" /></div>
+		<div><button :disabled="$submitting.form" @click="submit">Submit</button></div>
+		<div v-if="message">
+			{{ message }}
+		</div>
+	</div>
+</template>
+<script>
+export default {
+	data: () => ({
+		form: {
+			name: "John Doe"
+		},
+		message: ""
+	}),
+	methods: {
+		submit() {
+			return this.$submit("form", {
+				url: "/my/action",
+				data: {
+					...this.form
+				},
+				success: () => {
+					this.message = "Success";
+				},
+				error: () => {
+					this.message = "Error";
+				}
+			});
+		}
+	}
+};
+</script>
+```
 
 ### Instalation
 
@@ -21,7 +61,7 @@ Vue.use(VueSubmit, {
 });
 ```
 
-### Basic usage with buefy
+### Basic setup with buefy
 
 ```js
 import Vue from "vue";
