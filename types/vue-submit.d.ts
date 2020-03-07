@@ -32,15 +32,53 @@ export type VueSubmitNotification =
 	| VueSubmitNotificationOptions;
 
 export type VueSubmitOptions = AxiosRequestConfig & {
+	/**
+	 * Axios instance to use on the current request
+	 */
 	axios?: AxiosInstance;
+	/**
+	 * Validators to verify
+	 *
+	 * - function: Must return true/false or Promise
+	 * - vuelidate: Allows vuelidate validators instances
+	 * - Array: Array of validators to test
+	 */
 	validator?: unknown | unknown[];
-	confirmation?: VueSubmitConfirmation | (() => boolean | Promise<boolean>);
-	error?: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>;
+	/**
+	 * Options to show a confirmation dialog to the user.
+	 *
+	 * Confirmation must be one of the following
+	 * - false | null | undefined: Will skip confirmation
+	 * - true: Will be converted to { message: null }
+	 * - string: Will be converted to { message: string }
+	 * - function: Must return a boolean or a Promise<boolean> that indicates wheter or not the user
+	 *   confirmed the operation. The function will accept the vue instance and the default confirmation handler
+	 */
+	confirmation?:
+		| VueSubmitConfirmation
+		| ((
+				vm: Vue,
+				defaultConfirmation: (confirmation: VueSubmitConfirmation) => Promise<boolean>
+		  ) => boolean | Promise<boolean>);
+	/**
+	 * Triggers/Expects a download when performing the request.
+	 */
+	download?: boolean | string | { force?: boolean; filename: string | null };
+	/**
+	 * Callback on success / Options to notify in case of success
+	 *
+	 * This functions also returns the notification
+	 */
 	success?: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>;
+	/**
+	 * Callback on error
+	 *
+	 * This functions also returns the notification
+	 */
+	error?: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>;
 };
 
 export type VueSubmitResultResponse = AxiosResponse;
-
 export type VueSubmitResult = {
 	data: any;
 	response: VueSubmitResultResponse | null;

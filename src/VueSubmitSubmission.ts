@@ -13,6 +13,7 @@ import {
 } from "../types/vue-submit";
 import { AxiosInstance } from "axios";
 import { ValidatorError, ConfirmationAbortError } from "./Error";
+import { download } from "./util/Download";
 
 export class VueSubmitSubmission {
 	constructor(
@@ -117,13 +118,20 @@ export class VueSubmitSubmission {
 	private async confirmation(): Promise<boolean> {
 		if (!this.options.confirmation) return true;
 		if (typeof this.options.confirmation === "function") {
-			return !!(await this.options.confirmation());
+			return !!(await this.options.confirmation(this.vm, options =>
+				this.confirmationHandler(options)
+			));
 		}
+		return this.confirmationHandler(this.options.confirmation);
+	}
 
-		const confirmation = this.confirmationNormalize(this.options.confirmation);
-		if (!confirmation) return true;
+	private async confirmationHandler(
+		confirmation: VueSubmitConfirmation | undefined
+	): Promise<boolean> {
+		const confirmationNormalized = this.confirmationNormalize(confirmation);
+		if (!confirmationNormalized) return true;
 		if (!this.pluginOptions.confirmation) return true;
-		return !!(await this.pluginOptions.confirmation(this.vm, confirmation));
+		return !!(await this.pluginOptions.confirmation(this.vm, confirmationNormalized));
 	}
 
 	private confirmationNormalize(
@@ -142,10 +150,16 @@ export class VueSubmitSubmission {
 	/**
 	 *
 	 */
-	private async submitRequest(): Promise<VueSubmitResultResponse> {
+	private async submitRequest(): Promise<VueSubmitResultResponse | null> {
 		// @ts-ignore
 		const axios: AxiosInstance = this.options.axios || this.pluginOptions.axios || this.$axios;
 		if (!axios) throw new Error(`Invalid $axios for vue-submit`);
+
+		if (this.options.download) {
+			await download(axios, this.options);
+			return null;
+		}
+
 		return axios.request({
 			method: "post",
 			...this.options

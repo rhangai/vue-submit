@@ -1,9 +1,11 @@
 import fileDownload from "js-file-download";
+import { AxiosInstance } from "axios";
+import { VueSubmitOptions } from "../../types/vue-submit";
 
 /// Tipo de opções de download
 export type SubmitDownloadOptions = {
 	force?: boolean;
-	filename?: string | null;
+	filename: string | null;
 };
 
 /**
@@ -11,8 +13,11 @@ export type SubmitDownloadOptions = {
  * @param axiosInstance
  * @param options
  */
-export async function AxiosDownload(axiosInstance: any, options: any): Promise<void> {
-	const download: SubmitDownloadOptions = normalizeDownloadOptions(options.download);
+export async function download(
+	axiosInstance: AxiosInstance,
+	options: VueSubmitOptions
+): Promise<void> {
+	const download: SubmitDownloadOptions = normalizeDownloadOptions(options.download!);
 	options = Object.assign({}, options, {
 		responseType: "blob"
 	});
@@ -49,7 +54,9 @@ function getContentDisposition(response: any): string | null {
  *
  * @param downloadOptions The options passed to the download object
  */
-function normalizeDownloadOptions(downloadOptions: any): SubmitDownloadOptions {
+function normalizeDownloadOptions(
+	downloadOptions: boolean | string | SubmitDownloadOptions
+): SubmitDownloadOptions {
 	if (typeof downloadOptions === "string") {
 		return { filename: downloadOptions };
 	} else if (downloadOptions === true) {
