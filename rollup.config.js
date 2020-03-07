@@ -34,6 +34,7 @@ export default [
 			pluginTypescript(),
 			pluginBabel({
 				exclude: "node_modules/**",
+				runtimeHelpers: true,
 				extensions: [".js", ".ts"]
 			})
 		]
