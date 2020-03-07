@@ -3,7 +3,7 @@ import fileDownload from "js-file-download";
 /// Tipo de opções de download
 export type SubmitDownloadOptions = {
 	force?: boolean;
-	filename: string;
+	filename?: string | null;
 };
 
 /**
@@ -23,6 +23,7 @@ export async function AxiosDownload(axiosInstance: any, options: any): Promise<v
 		throw new Error("Invalid file download");
 
 	const filename = download.filename || contentDispositionFilename;
+	if (!filename) throw new Error(`Invalid filename for download`);
 	fileDownload(response.data, filename);
 }
 

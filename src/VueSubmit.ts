@@ -1,9 +1,6 @@
 import Vue, { VueConstructor } from "vue";
 import { isVuelidate } from "./util/Vuelidate";
-
-export type VueSubmitOptions = {
-	validator: unknown | unknown[];
-};
+import { VueSubmitOptions, VueSubmitResult } from "../types/vue-submit";
 
 export class VueSubmitManager {
 	public readonly submitting: { [key: string]: boolean };
@@ -18,10 +15,11 @@ export class VueSubmitManager {
 		this.submitErrors = vue.observable({});
 	}
 
-	async submit(name: string, options: VueSubmitOptions) {
+	async submit(name: string, options: VueSubmitOptions): Promise<VueSubmitResult> {
 		if (this.submitting[name]) {
 			throw new Error(`Already submitting`);
 		}
+		let result: VueSubmitResult = {};
 		try {
 			this.submitting[name] = true;
 			const isValid = await this.submitValidate(options.validator);
@@ -29,6 +27,7 @@ export class VueSubmitManager {
 		} finally {
 			this.submitting[name] = false;
 		}
+		return result;
 	}
 
 	private async submitValidate(validator: unknown | unknown[]): Promise<boolean> {
@@ -53,7 +52,7 @@ export class VueSubmitManager {
 			validator.$touch();
 			if (validator.$pending) {
 				await new Promise((resolve, reject) => {
-					let unwatch = null;
+					let unwatch: any = null;
 					const onDestroy = () => {
 						unwatch();
 						reject(new Error(`Component destroyed`));

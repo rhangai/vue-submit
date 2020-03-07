@@ -1,5 +1,7 @@
 import Vue, { VueConstructor } from "vue";
-import { VueSubmitOptions, VueSubmitManager } from "./VueSubmit";
+import { VueSubmitManager } from "./VueSubmit";
+import { VueSubmitCallback, VueSubmitOptions } from "../types/vue-submit";
+import { serializeFormData } from "./util/SerializeFormData";
 
 function defineProperty(proto: any, name: string, getter: (self: any) => unknown) {
 	Object.defineProperty(proto, name, {
@@ -17,17 +19,18 @@ function defineProperty(proto: any, name: string, getter: (self: any) => unknown
 	});
 }
 export class VueSubmitPlugin {
-	static createSubmit(vue: VueConstructor, vm: Vue) {
+	static createSubmit(vue: VueConstructor, vm: Vue): VueSubmitCallback {
 		const instance = new VueSubmitManager(vue, vm);
 		const submit = function(name: string, options: VueSubmitOptions) {
 			return instance.submit(name, options);
 		};
+		submit.serializeFormData = serializeFormData;
 		submit.$instance = instance;
 		return submit;
 	}
 	static install(vue: VueConstructor): void {
 		defineProperty(vue.prototype, "$submit", function(self: Vue) {
-			return VueSubmitPlugin.createSubmit(vue, this);
+			return VueSubmitPlugin.createSubmit(vue, self);
 		});
 		defineProperty(vue.prototype, "$submitting", function(self: Vue) {
 			// @ts-ignore

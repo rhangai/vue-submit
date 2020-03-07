@@ -4,7 +4,7 @@
   "description": "Vue submit helper",
   "main": "dist/vue-submit.umd.js",
   "module": "dist/vue-submit.js",
-  "types": "./index.d.ts",
+  "typings": "src/index.ts",
   "repository": "git@github.com:rhangai/vue-submit.git",
   "author": "rhangai <hangai.renan@gmail.com>",
   "license": "MIT",
