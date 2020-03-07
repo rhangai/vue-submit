@@ -1,66 +1,56 @@
-vue-submit
-=======================
+# vue-submit
 
 Helper for requests with confirmation, notification and loading status.
 
-### Instalation ###
+### Instalation
 
 ```js
-import Vue from 'vue';
-import VueSubmit from 'vue-submit';
+import Vue from "vue";
+import VueSubmit from "@rhangai/vue-submit";
+import axios from "axios";
 
-// Default options
-Vue.use( VueSubmit );
-
-// Or by using a framework name
-Vue.use( VueSubmit, "buefy" );
-
-// Or using full options 
-Vue.use( VueSubmit, {
-	//! Framework to set
-	framework?: SubmitOptionsFramework,
-	//! Confirmation function to be called on the confirmation step
-	confirmation?: ( vm: any, confirmationData: any ) => any,
-	confirmationDefaults?: any,
-	//! Notification function to be called on notify step
-	notify?: ( vm: any, notifyData: any, notifyDefaults?: any ) => any,
-	notifyDefaults?: any,
-	notifyDefaultsError?: any,
-	notifyDefaultsErrorValidation?: any,
-	//! Set the request function
-	request?: ( vm: any, requestData: any ) => any,
-	requestDefaults?: any,
-	//! Compatibility options { Promise } for now
-	compat: SubmitManagerCompatOptions,
-}); 
-```
-
-### Usage ####
-```js
-
-this.$submit( "name", {
-	//! The validator to use (vuelidate compatible)
-	validator?: any,
-	//! Set to false if you do not want to trigger the loading bar from nuxt
-	loading?:   Boolean,
-	//! Override the request functions
-	request?: ( vm: any, requestData: any ) => any,
-	//! Function to be called on success
-	success?: ( result: any ) => any,
-	//! Confirmation object passed to constructor
-	confirmation?: any,
-	//! Notify options on success and errors
-	notify?: any,
-	notifyError?: any,
+// Or using full options
+Vue.use(VueSubmit, {
+	axios,
+	confirmation: (vm, confirmation) => {
+		// Do something and returns true/false depending on the confirmation
+	},
+	notify: (vm, result) => {
+		// Notify the status
+	}
 });
 ```
 
-### Capturing errors ###
+### Basic usage with buefy
 
 ```js
-this.$submit( "name", {
-	notifyError({ data }) {
-		// do something with the data
+import Vue from "vue";
+import VueSubmit from "@rhangai/vue-submit";
+import axios from "axios";
+
+Vue.use(VueSubmit, {
+	axios,
+	confirmation(vm, options) {
+		return new Promise(resolve => {
+			vm.$buefy.dialog.confirm({
+				message: options.message || "Are you sure?",
+				onCancel: () => resolve(false),
+				onConfirm: () => resolve(true)
+			});
+		});
+	},
+	notify(vm, { notification, error }) {
+		if (error) {
+			vm.$buefy.snackbar.open({
+				type: "is-danger",
+				message: notification.message || "Something went wrong"
+			});
+		} else {
+			vm.$buefy.snackbar.open({
+				type: "is-success",
+				message: notification.message || "Success"
+			});
+		}
 	}
-})
+});
 ```
