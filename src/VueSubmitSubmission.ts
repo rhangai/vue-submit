@@ -148,18 +148,27 @@ export class VueSubmitSubmission {
 	}
 
 	/**
-	 *
+	 * Perform the submission request
 	 */
 	private async submitRequest(): Promise<VueSubmitResultResponse | null> {
+		// Perform a custom request
+		if (this.options.request) {
+			await this.options.request(this.options);
+			return null;
+		}
+
+		// Get the axios instance
 		const axios: AxiosInstance =
 			this.options.axios || this.pluginOptions.axios || (this.vm as any).$axios;
 		if (!axios) throw new Error(`Invalid $axios for vue-submit`);
 
+		// Try to download using axios
 		if (this.options.download) {
 			await download(axios, this.options);
 			return null;
 		}
 
+		// Perform the request using axios
 		return axios.request({
 			method: "post",
 			...this.options

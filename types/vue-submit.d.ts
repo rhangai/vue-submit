@@ -37,6 +37,10 @@ export type VueSubmitOptions = AxiosRequestConfig & {
 	 */
 	axios?: AxiosInstance;
 	/**
+	 * Function to perform the request
+	 */
+	request?: (options: VueSubmitOptions) => unknown;
+	/**
 	 * Validators to verify
 	 *
 	 * - function: Must return true/false or Promise
@@ -78,7 +82,7 @@ export type VueSubmitOptions = AxiosRequestConfig & {
 	error?: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>;
 };
 
-export type VueSubmitResultResponse = AxiosResponse;
+export type VueSubmitResultResponse = { data: any };
 export type VueSubmitResult = {
 	data: any;
 	response: VueSubmitResultResponse | null;
