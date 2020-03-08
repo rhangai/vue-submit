@@ -1,5 +1,6 @@
 import { VueConstructor } from "vue";
 import { VueSubmitPluginOptions } from "./types/vue-submit";
+import "./types/vue";
 
 export type VueSubmitPlugin = {
 	install(vue: VueConstructor, options?: VueSubmitPluginOptions): void;

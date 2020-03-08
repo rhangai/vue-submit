@@ -3,7 +3,7 @@ import { VueSubmitFunction } from "./vue-submit";
 
 declare module "vue/types/vue" {
 	interface Vue {
-		$submit?: VueSubmitFunction;
+		$submit: VueSubmitFunction;
 		$submitting: Record<string, boolean>;
 		$submitErrors: Record<string, Error>;
 	}
