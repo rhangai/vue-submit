@@ -151,8 +151,8 @@ export class VueSubmitSubmission {
 	 *
 	 */
 	private async submitRequest(): Promise<VueSubmitResultResponse | null> {
-		// @ts-ignore
-		const axios: AxiosInstance = this.options.axios || this.pluginOptions.axios || this.$axios;
+		const axios: AxiosInstance =
+			this.options.axios || this.pluginOptions.axios || (this.vm as any).$axios;
 		if (!axios) throw new Error(`Invalid $axios for vue-submit`);
 
 		if (this.options.download) {
