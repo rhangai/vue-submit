@@ -32,6 +32,6 @@
     "clean": "rimraf dist",
     "build": "rollup -c rollup.config.js",
     "release": "standard-version",
-    "prepack": "run-s clean build"
+    "prepare": "run-s clean build"
   }
 }
