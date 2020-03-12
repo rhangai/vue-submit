@@ -17,7 +17,9 @@ export async function download(
 	axiosInstance: AxiosInstance,
 	options: VueSubmitOptions
 ): Promise<void> {
-	const download: SubmitDownloadOptions = normalizeDownloadOptions(options.download!);
+	const download: SubmitDownloadOptions = normalizeDownloadOptions(
+		options.download!
+	);
 	options = Object.assign({}, options, {
 		responseType: "blob"
 	});

@@ -1,36 +1,43 @@
 import Vue from "vue";
 import { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
 
-export type VueSubmitValueOrCallback<T, Arg> = T | ((arg: Arg) => T | Promise<T>);
+export type VueSubmitValueOrCallback<T, Arg> =
+	| T
+	| ((arg: Arg) => T | Promise<T>);
 
 export type VueSubmitPluginOptions = {
 	axios?: AxiosInstance;
+	request?: (context: VueSubmitContext) => unknown;
 	notify?: (vm: Vue, result: VueSubmitResult) => void | Promise<void>;
-	confirmation?: (vm: Vue, options: VueSubmitConfirmationOptions) => Promise<boolean>;
+	confirmation?: (vm: Vue, options: VueSubmitConfirmation) => Promise<boolean>;
 };
 
-export type VueSubmitConfirmationOptions = {
+export type VueSubmitConfirmation = {
 	message?: string | null;
 	[key: string]: any;
 };
-export type VueSubmitConfirmation =
+export type VueSubmitConfirmationResult =
 	| boolean
 	| null
 	| undefined
 	| string
-	| VueSubmitConfirmationOptions;
+	| VueSubmitConfirmation;
 
-export type VueSubmitNotificationOptions = {
+export type VueSubmitNotification = {
 	message?: string | null;
 	[key: string]: any;
 };
-export type VueSubmitNotification =
+export type VueSubmitNotificationResult =
 	| null
 	| undefined
 	| boolean
 	| string
-	| VueSubmitNotificationOptions;
+	| VueSubmitNotification;
 
+export type VueSubmitContext = {
+	vm: Vue;
+	options: VueSubmitOptions;
+};
 export type VueSubmitOptions = AxiosRequestConfig & {
 	/**
 	 * Axios instance to use on the current request
@@ -39,7 +46,7 @@ export type VueSubmitOptions = AxiosRequestConfig & {
 	/**
 	 * Function to perform the request
 	 */
-	request?: (options: VueSubmitOptions) => unknown;
+	request?: (context: VueSubmitContext) => unknown;
 	/**
 	 * Validators to verify
 	 *
@@ -59,10 +66,12 @@ export type VueSubmitOptions = AxiosRequestConfig & {
 	 *   confirmed the operation. The function will accept the vue instance and the default confirmation handler
 	 */
 	confirmation?:
-		| VueSubmitConfirmation
+		| VueSubmitConfirmationResult
 		| ((
 				vm: Vue,
-				defaultConfirmation: (confirmation: VueSubmitConfirmation) => Promise<boolean>
+				defaultConfirmation: (
+					confirmation: VueSubmitConfirmationResult
+				) => Promise<boolean>
 		  ) => boolean | Promise<boolean>);
 	/**
 	 * Triggers/Expects a download when performing the request.
@@ -73,13 +82,19 @@ export type VueSubmitOptions = AxiosRequestConfig & {
 	 *
 	 * This functions also returns the notification
 	 */
-	success?: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>;
+	success?: VueSubmitValueOrCallback<
+		VueSubmitNotificationResult,
+		VueSubmitResult
+	>;
 	/**
 	 * Callback on error
 	 *
 	 * This functions also returns the notification
 	 */
-	error?: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>;
+	error?: VueSubmitValueOrCallback<
+		VueSubmitNotificationResult,
+		VueSubmitResult
+	>;
 };
 
 export type VueSubmitResultResponse = { data: any };
@@ -87,7 +102,7 @@ export type VueSubmitResult = {
 	data: any;
 	response: VueSubmitResultResponse | null;
 	error: Error | null;
-	notification: VueSubmitNotificationOptions | null;
+	notification: VueSubmitNotification | null;
 };
 
 export type VueSubmitSerializeFormDataInput =
@@ -98,7 +113,16 @@ export type VueSubmitSerializeFormDataInput =
 	| { [key: string]: VueSubmitSerializeFormDataInput }
 	| Array<VueSubmitSerializeFormDataInput>;
 
+/**
+ * The vue submit function
+ */
 export type VueSubmitFunction = {
 	(name: string, options: VueSubmitOptions): Promise<void>;
-	serializeFormData(input: Record<string, VueSubmitSerializeFormDataInput>): FormData;
+	/**
+	 * Serialize the form data
+	 * @param input
+	 */
+	serializeFormData(
+		input: Record<string, VueSubmitSerializeFormDataInput>
+	): FormData;
 };

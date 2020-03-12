@@ -1,10 +1,24 @@
 import Vue, { VueConstructor } from "vue";
 import { VueSubmitManager } from "./VueSubmitManager";
-import { VueSubmitFunction, VueSubmitOptions, VueSubmitPluginOptions } from "../types/vue-submit";
+import {
+	VueSubmitFunction,
+	VueSubmitOptions,
+	VueSubmitPluginOptions
+} from "../types/vue-submit";
 import { serializeFormData } from "./util/SerializeFormData";
 
-function defineProperty(proto: any, name: string, getter: (self: any) => unknown) {
-	Object.defineProperty(proto, name, {
+/**
+ * Defines a new property
+ * @param target The prototype
+ * @param name Name of the property
+ * @param getter The getter function
+ */
+function defineProperty(
+	target: any,
+	name: string,
+	getter: (self: any) => unknown
+) {
+	Object.defineProperty(target, name, {
 		configurable: true,
 		get() {
 			const value = getter(this);
@@ -31,7 +45,10 @@ export class VueSubmitPlugin {
 		submit.$instance = instance;
 		return submit;
 	}
-	static install(vue: VueConstructor, pluginOptions: VueSubmitPluginOptions = {}): void {
+	static install(
+		vue: VueConstructor,
+		pluginOptions: VueSubmitPluginOptions = {}
+	): void {
 		defineProperty(vue.prototype, "$submit", function(self: Vue) {
 			return VueSubmitPlugin.createSubmit(vue, self, pluginOptions);
 		});

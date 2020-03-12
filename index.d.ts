@@ -3,6 +3,11 @@ import { VueSubmitPluginOptions } from "./types/vue-submit";
 import "./types/vue";
 
 export type VueSubmitPlugin = {
+	/**
+	 *
+	 * @param vue
+	 * @param options
+	 */
 	install(vue: VueConstructor, options?: VueSubmitPluginOptions): void;
 };
 

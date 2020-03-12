@@ -1,9 +1,15 @@
 import Vue, { VueConstructor } from "vue";
-import { VueSubmitOptions, VueSubmitResult, VueSubmitPluginOptions } from "../types/vue-submit";
+import {
+	VueSubmitOptions,
+	VueSubmitResult,
+	VueSubmitPluginOptions
+} from "../types/vue-submit";
 import { VueSubmitSubmission } from "./VueSubmitSubmission";
 
 export class VueSubmitManager {
+	/// Map of pending submission
 	private readonly submissions: Record<string, VueSubmitSubmission | null> = {};
+
 	constructor(
 		//
 		private readonly vue: VueConstructor,

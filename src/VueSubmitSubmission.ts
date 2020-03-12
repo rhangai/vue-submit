@@ -5,11 +5,11 @@ import {
 	VueSubmitResult,
 	VueSubmitPluginOptions,
 	VueSubmitValueOrCallback,
+	VueSubmitNotificationResult,
 	VueSubmitNotification,
-	VueSubmitNotificationOptions,
 	VueSubmitResultResponse,
-	VueSubmitConfirmation,
-	VueSubmitConfirmationOptions
+	VueSubmitConfirmationResult,
+	VueSubmitConfirmation
 } from "../types/vue-submit";
 import { AxiosInstance } from "axios";
 import { ValidatorError, ConfirmationAbortError } from "./Error";
@@ -70,10 +70,14 @@ export class VueSubmitSubmission {
 	 * Validate before every item on the validator
 	 * @param validator
 	 */
-	private async validateValidator(validator: unknown | unknown[]): Promise<boolean> {
+	private async validateValidator(
+		validator: unknown | unknown[]
+	): Promise<boolean> {
 		if (validator == null) return true;
 		if (Array.isArray(validator)) {
-			const isValidMap = await Promise.all(validator.map(v => this.validateValidator(v)));
+			const isValidMap = await Promise.all(
+				validator.map(v => this.validateValidator(v))
+			);
 			return isValidMap.indexOf(false) < 0;
 		}
 		if (validator === true) {
@@ -126,17 +130,20 @@ export class VueSubmitSubmission {
 	}
 
 	private async confirmationHandler(
-		confirmation: VueSubmitConfirmation | undefined
+		confirmation: VueSubmitConfirmationResult | undefined
 	): Promise<boolean> {
 		const confirmationNormalized = this.confirmationNormalize(confirmation);
 		if (!confirmationNormalized) return true;
 		if (!this.pluginOptions.confirmation) return true;
-		return !!(await this.pluginOptions.confirmation(this.vm, confirmationNormalized));
+		return !!(await this.pluginOptions.confirmation(
+			this.vm,
+			confirmationNormalized
+		));
 	}
 
 	private confirmationNormalize(
-		confirmation: VueSubmitConfirmation | undefined
-	): VueSubmitConfirmationOptions | false {
+		confirmation: VueSubmitConfirmationResult | undefined
+	): VueSubmitConfirmation | false {
 		if (confirmation === true) {
 			return {};
 		} else if (!confirmation) {
@@ -152,8 +159,9 @@ export class VueSubmitSubmission {
 	 */
 	private async submitRequest(): Promise<VueSubmitResultResponse | null> {
 		// Perform a custom request
-		if (this.options.request) {
-			await this.options.request(this.options);
+		const customRequest = this.options.request || this.pluginOptions.request;
+		if (customRequest) {
+			await customRequest({ vm: this.vm, options: this.options });
 			return null;
 		}
 
@@ -198,14 +206,23 @@ export class VueSubmitSubmission {
 			notification: null
 		};
 		const callback = error ? this.options.error : this.options.success;
-		const notification = await this.submitFinishCallback(callback, result);
-		return { ...result, notification: this.notificationNormalize(notification) };
+		const notificationResult = await this.submitFinishCallback(
+			callback,
+			result
+		);
+		return {
+			...result,
+			notification: this.notificationNormalize(notificationResult)
+		};
 	}
 
 	private async submitFinishCallback(
-		valueOrCallback: VueSubmitValueOrCallback<VueSubmitNotification, VueSubmitResult>,
+		valueOrCallback: VueSubmitValueOrCallback<
+			VueSubmitNotificationResult,
+			VueSubmitResult
+		>,
 		result: VueSubmitResult
-	): Promise<VueSubmitNotification> {
+	): Promise<VueSubmitNotificationResult> {
 		if (typeof valueOrCallback === "function") {
 			return valueOrCallback(result);
 		}
@@ -213,8 +230,8 @@ export class VueSubmitSubmission {
 	}
 
 	private notificationNormalize(
-		notification: VueSubmitNotification
-	): VueSubmitNotificationOptions | null {
+		notification: VueSubmitNotificationResult
+	): VueSubmitNotification | null {
 		if (notification === false) {
 			return null;
 		} else if (notification === true || notification == null) {
