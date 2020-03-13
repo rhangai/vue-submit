@@ -9,11 +9,13 @@ import {
 	VueSubmitNotification,
 	VueSubmitResultResponse,
 	VueSubmitConfirmationResult,
-	VueSubmitConfirmation
+	VueSubmitConfirmation,
+	VueSubmitAxiosLike,
 } from "../types/vue-submit";
 import { AxiosInstance } from "axios";
 import { ValidatorError, ConfirmationAbortError } from "./Error";
 import { download } from "./util/Download";
+import { getAxiosOptions } from "./util/Axios";
 
 export class VueSubmitSubmission {
 	constructor(
@@ -166,7 +168,7 @@ export class VueSubmitSubmission {
 		}
 
 		// Get the axios instance
-		const axios: AxiosInstance =
+		const axios: VueSubmitAxiosLike =
 			this.options.axios || this.pluginOptions.axios || (this.vm as any).$axios;
 		if (!axios) throw new Error(`Invalid $axios for vue-submit`);
 
@@ -177,10 +179,8 @@ export class VueSubmitSubmission {
 		}
 
 		// Perform the request using axios
-		return axios.request({
-			method: "post",
-			...this.options
-		});
+		const axiosOptions = getAxiosOptions(this.options);
+		return axios(axiosOptions);
 	}
 
 	private async transform(data: any): Promise<any> {
@@ -203,7 +203,7 @@ export class VueSubmitSubmission {
 			data,
 			response,
 			error,
-			notification: null
+			notification: null,
 		};
 		const callback = error ? this.options.error : this.options.success;
 		const notificationResult = await this.submitFinishCallback(
@@ -212,7 +212,7 @@ export class VueSubmitSubmission {
 		);
 		return {
 			...result,
-			notification: this.notificationNormalize(notificationResult)
+			notification: this.notificationNormalize(notificationResult),
 		};
 	}
 

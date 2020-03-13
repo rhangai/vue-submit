@@ -8,7 +8,9 @@ Helper for requests with confirmation, notification and loading status.
 <template>
 	<div>
 		<div>Name <input v-model="form.name" /></div>
-		<div><button :disabled="$submitting.form" @click="submit">Submit</button></div>
+		<div>
+			<button :disabled="$submitting.form" @click="submit">Submit</button>
+		</div>
 		<div v-if="message">
 			{{ message }}
 		</div>
@@ -46,7 +48,7 @@ export default {
 
 ```js
 import Vue from "vue";
-import VueSubmit from "@rhangai/vue-submit";
+import { VueSubmit } from "@rhangai/vue-submit";
 import axios from "axios";
 
 // Or using full options
@@ -65,7 +67,7 @@ Vue.use(VueSubmit, {
 
 ```js
 import Vue from "vue";
-import VueSubmit from "@rhangai/vue-submit";
+import { VueSubmit } from "@rhangai/vue-submit";
 import axios from "axios";
 
 Vue.use(VueSubmit, {

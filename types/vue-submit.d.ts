@@ -6,10 +6,13 @@ export type VueSubmitValueOrCallback<T, Arg> =
 	| ((arg: Arg) => T | Promise<T>);
 
 export type VueSubmitPluginOptions = {
-	axios?: AxiosInstance;
+	axios?: VueSubmitAxiosLike;
 	request?: (context: VueSubmitContext) => unknown;
 	notify?: (vm: Vue, result: VueSubmitResult) => void | Promise<void>;
-	confirmation?: (vm: Vue, options: VueSubmitConfirmation) => Promise<boolean>;
+	confirmation?: (
+		vm: Vue,
+		options: VueSubmitConfirmation
+	) => boolean | Promise<boolean>;
 };
 
 export type VueSubmitConfirmation = {
@@ -38,11 +41,16 @@ export type VueSubmitContext = {
 	vm: Vue;
 	options: VueSubmitOptions;
 };
+
+export type VueSubmitAxiosLike = (
+	config: AxiosRequestConfig
+) => VueSubmitResultResponse | Promise<VueSubmitResultResponse>;
+
 export type VueSubmitOptions = AxiosRequestConfig & {
 	/**
 	 * Axios instance to use on the current request
 	 */
-	axios?: AxiosInstance;
+	axios?: VueSubmitAxiosLike;
 	/**
 	 * Function to perform the request
 	 */
