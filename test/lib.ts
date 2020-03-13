@@ -1,9 +1,11 @@
 import { VueSubmit, VueSubmitPluginOptions } from "../src";
 import { createLocalVue, mount, Wrapper } from "@vue/test-utils";
-import Vue from "vue";
-import { VueConstructor } from "vue/types/umd";
+import Vue, { VueConstructor } from "vue";
 
-type CreateWrapperOptions<V extends Vue> = VueSubmitPluginOptions & {
+type CreateVueOptions<V extends Vue> = VueSubmitPluginOptions & {
+	setup?: (v: VueConstructor<Vue>) => unknown;
+};
+type CreateWrapperOptions<V extends Vue> = CreateVueOptions<V> & {
 	component?: (v: VueConstructor<Vue>) => VueConstructor<V>;
 };
 
@@ -17,7 +19,7 @@ type CreateWrapperResult<V extends Vue> = {
 	};
 };
 
-function createVue(options?: VueSubmitPluginOptions) {
+function createVue(options?: CreateVueOptions<Vue>) {
 	const mocks = {
 		axios: jest.fn(_ => ({ data: {} })),
 		confirmation: jest.fn((a, b) => true),
@@ -29,6 +31,7 @@ function createVue(options?: VueSubmitPluginOptions) {
 	};
 	const vue = createLocalVue();
 	vue.use(VueSubmit, options);
+	options.setup?.(vue);
 	return { vue, mocks };
 }
 

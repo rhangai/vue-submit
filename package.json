@@ -18,6 +18,7 @@
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@rollup/plugin-typescript": "^4.0.0",
     "@types/jest": "^25.1.4",
+    "@types/vuelidate": "^0.7.11",
     "@vue/test-utils": "^1.0.0-beta.32",
     "axios": "^0.19.2",
     "jest": "^25.1.0",
@@ -31,7 +32,8 @@
     "tslib": "^1.11.1",
     "typescript": "^3.8.3",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuelidate": "^0.7.5"
   },
   "scripts": {
     "clean": "rimraf dist",
