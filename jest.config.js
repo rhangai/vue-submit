@@ -9,7 +9,7 @@ module.exports = {
 	coverageDirectory: "coverage",
 	collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
 	// The paths to modules that run some code to configure or set up the testing environment before each test
-	setupFiles: ["<rootDir>/test/setup.ts"],
+	setupFiles: [],
 	// The test environment that will be used for testing
 	testEnvironment: "jsdom",
 	// The glob patterns Jest uses to detect test files

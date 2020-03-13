@@ -42,7 +42,7 @@ export async function download(
  * @return
  */
 function getContentDisposition(response: any): string | null {
-	if (response.headers["content-disposition"]) {
+	if (response.headers && response.headers["content-disposition"]) {
 		const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 		const matches = filenameRegex.exec(response.headers["content-disposition"]);
 		if (matches != null && matches[1]) {
@@ -66,6 +66,8 @@ function normalizeDownloadOptions(
 	} else if (downloadOptions === true) {
 		return { filename: null };
 	} else if (typeof downloadOptions === "object") {
+		if (Array.isArray(downloadOptions))
+			throw new Error("Invalid download options");
 		return downloadOptions;
 	}
 	throw new Error("Invalid download options");

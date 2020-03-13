@@ -1,4 +1,4 @@
-import { createWrapper } from "../util";
+import { createWrapper } from "../lib";
 
 describe("serializeFormData", () => {
 	it("should get form data", () => {

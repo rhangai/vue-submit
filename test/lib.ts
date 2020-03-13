@@ -4,7 +4,7 @@ import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 
 type CreateWrapperOptions<V extends Vue> = VueSubmitPluginOptions & {
-	component: (v: VueConstructor<Vue>) => VueConstructor<V>;
+	component?: (v: VueConstructor<Vue>) => VueConstructor<V>;
 };
 
 type CreateWrapperResult<V extends Vue> = {
