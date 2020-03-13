@@ -7,10 +7,11 @@ module.exports = {
 	clearMocks: true,
 	// The directory where Jest should output its coverage files
 	coverageDirectory: "coverage",
+	collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
 	// The paths to modules that run some code to configure or set up the testing environment before each test
 	setupFiles: ["<rootDir>/test/setup.ts"],
 	// The test environment that will be used for testing
 	testEnvironment: "jsdom",
 	// The glob patterns Jest uses to detect test files
-	testMatch: ["<rootDir>/test/**/*.(spec|test).ts"]
+	testMatch: ["<rootDir>/test/**/*.(spec|test).ts"],
 };

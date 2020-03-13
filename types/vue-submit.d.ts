@@ -113,13 +113,17 @@ export type VueSubmitResult = {
 	notification: VueSubmitNotification | null;
 };
 
-export type VueSubmitSerializeFormDataInput =
+type VueSubmitSerializeFormDataInputPrimitive =
 	| string
 	| File
 	| number
-	| undefined
+	| null
+	| undefined;
+
+export type VueSubmitSerializeFormDataInput =
+	| VueSubmitSerializeFormDataInputPrimitive
 	| { [key: string]: VueSubmitSerializeFormDataInput }
-	| Array<VueSubmitSerializeFormDataInput>;
+	| Array<VueSubmitSerializeFormDataInputPrimitive>;
 
 /**
  * The vue submit function
