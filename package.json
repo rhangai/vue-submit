@@ -38,6 +38,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "rollup -c rollup.config.js",
+    "prerelease": "run-s test",
     "release": "standard-version",
     "prepack": "run-s clean build",
     "test": "jest"
