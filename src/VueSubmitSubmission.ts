@@ -179,7 +179,7 @@ export class VueSubmitSubmission {
 		}
 
 		// Perform the request using axios
-		const axiosOptions = getAxiosOptions(this.options);
+		const axiosOptions = await getAxiosOptions(this.options);
 		return axios(axiosOptions);
 	}
 

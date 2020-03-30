@@ -21,7 +21,7 @@ export async function download(
 		options.download!
 	);
 	// Perform the request using axios
-	const axiosOptions = getAxiosOptions(options, {
+	const axiosOptions = await getAxiosOptions(options, {
 		method: "post",
 		responseType: "blob",
 	});

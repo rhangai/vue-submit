@@ -46,11 +46,15 @@ export type VueSubmitAxiosLike = (
 	config: AxiosRequestConfig
 ) => VueSubmitResultResponse | Promise<VueSubmitResultResponse>;
 
-export type VueSubmitOptions = AxiosRequestConfig & {
+export type VueSubmitOptions = Omit<AxiosRequestConfig, "data"> & {
 	/**
 	 * Axios instance to use on the current request
 	 */
 	axios?: VueSubmitAxiosLike;
+	/**
+	 * The data to use on submission
+	 */
+	data?: unknown | (() => unknown | Promise<unknown>);
 	/**
 	 * Function to perform the request
 	 */
