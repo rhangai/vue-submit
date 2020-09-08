@@ -1,6 +1,6 @@
 {
   "name": "@rhangai/vue-submit",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Vue submit helper",
   "main": "dist/vue-submit.umd.js",
   "module": "dist/vue-submit.js",
