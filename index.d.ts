@@ -1,7 +1,7 @@
 import { PluginObject } from "vue";
-import { VueSubmitPluginOptions } from "./types/vue-submit";
+import { VueSubmitPluginOptions, VueSubmitOptions } from "./types/vue-submit";
 import "./types/vue";
 
-export { VueSubmitPluginOptions };
+export { VueSubmitPluginOptions, VueSubmitOptions };
 
 export const VueSubmit: PluginObject<VueSubmitPluginOptions>;
