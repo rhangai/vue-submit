@@ -2,7 +2,7 @@ import Vue, { VueConstructor } from "vue";
 import {
 	VueSubmitOptions,
 	VueSubmitResult,
-	VueSubmitPluginOptions
+	VueSubmitPluginOptions,
 } from "../types/vue-submit";
 import { VueSubmitSubmission } from "./VueSubmitSubmission";
 
@@ -51,13 +51,16 @@ export class VueSubmitManager {
 		try {
 			this.vm.$set(this.vm.$submitErrors, key, null);
 			this.vm.$set(this.vm.$submitting, key, true);
+			options.hookBeforeSubmit?.();
 			return await submission.submit();
 		} catch (error) {
 			this.vm.$set(this.vm.$submitErrors, key, error);
+			options.hookErrorSubmit?.(error);
 			throw error;
 		} finally {
 			this.submissions[key] = null;
 			this.vm.$set(this.vm.$submitting, key, false);
+			options.hookAfterSubmit?.();
 		}
 	}
 }

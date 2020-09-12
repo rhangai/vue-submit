@@ -46,7 +46,10 @@ export type VueSubmitAxiosLike = (
 	config: AxiosRequestConfig
 ) => VueSubmitResultResponse | Promise<VueSubmitResultResponse>;
 
-export type VueSubmitOptions<Data = unknown> = Omit<AxiosRequestConfig, "data"> & {
+export type VueSubmitOptions<Data = unknown> = Omit<
+	AxiosRequestConfig,
+	"data"
+> & {
 	/**
 	 * Axios instance to use on the current request
 	 */
@@ -107,6 +110,12 @@ export type VueSubmitOptions<Data = unknown> = Omit<AxiosRequestConfig, "data"> 
 		VueSubmitNotificationResult,
 		VueSubmitResult
 	>;
+	/**
+	 * Hooks
+	 */
+	hookBeforeSubmit?: () => void;
+	hookAfterSubmit?: () => void;
+	hookErrorSubmit?: (error: Error) => void;
 };
 
 export type VueSubmitResultResponse = { data: any };
@@ -133,7 +142,9 @@ export type VueSubmitSerializeFormDataInput =
  * The vue submit function
  */
 export type VueSubmitFunction = {
-	<Data = unknown>(name: string, options: VueSubmitOptions<Data>): Promise<void>;
+	<Data = unknown>(name: string, options: VueSubmitOptions<Data>): Promise<
+		void
+	>;
 	/**
 	 * Serialize the form data
 	 * @param input
