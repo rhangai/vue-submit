@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { inject, ref, computed, provide, markRaw } from "@vue/composition-api";
 import { SubmitManager } from "src/SubmitManager";
+import { VueSubmitOptions } from "src/Types";
 
 const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
 
@@ -61,7 +62,7 @@ export function useSubmitProvider() {
 	};
 }
 
-export function useSubmit(options: any) {
+export function useSubmit<Data = unknown>(options: VueSubmitOptions<Data>) {
 	const context = inject<VueSubmitContext | null>(VUE_SUBMIT_KEY, null);
 	if (!context) {
 		throw new Error(
