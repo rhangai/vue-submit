@@ -1,21 +1,64 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { inject, ref, computed, provide } from "@vue/composition-api";
-import {
-	VueSubmitPlugin as ParentVueSubmitPlugin,
-	VueSubmitContext,
-	VueSubmitPluginOptions,
-} from "../Plugin";
+import { inject, ref, computed, provide, markRaw } from "@vue/composition-api";
+import { SubmitManager } from "src/SubmitManager";
 
 const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
 
-export const VueSubmitPlugin = {
-	install(vue: any, options: VueSubmitPluginOptions) {
-		ParentVueSubmitPlugin.install(vue, options);
-	},
+export type VueSubmitContext = {
+	submitManager: SubmitManager;
 };
 
-export function provideSubmit(vue: any) {
-	provide(VUE_SUBMIT_KEY, vue.$submitContext);
+export function useSubmitProviderRaw() {
+	const submitManager = new SubmitManager();
+	provide<VueSubmitContext>(VUE_SUBMIT_KEY, { submitManager });
+	return {
+		submitManager,
+	};
+}
+
+export function useSubmitProvider() {
+	const { submitManager } = useSubmitProviderRaw();
+
+	const submitConfirmationsMut = ref<unknown[]>([]);
+	const submitNotificationsMut = ref<unknown[]>([]);
+
+	submitManager.setNotificationCallback((notification, result) => {
+		return new Promise((resolve) => {
+			let item: any;
+			const close = () => {
+				const newItems = submitNotificationsMut.value.filter((i) => i !== item);
+				submitNotificationsMut.value = newItems;
+				resolve();
+			};
+			item = markRaw({ notification, result, close });
+			submitNotificationsMut.value.push(item);
+		});
+	});
+
+	submitManager.setConfirmationCallback((confirmation) => {
+		return new Promise((resolve) => {
+			let item: any;
+			const clearItem = () => {
+				const newItems = submitConfirmationsMut.value.filter((i) => i !== item);
+				submitConfirmationsMut.value = newItems;
+			};
+			const confirm = () => {
+				clearItem();
+				resolve(true);
+			};
+			const cancel = () => {
+				clearItem();
+				resolve(false);
+			};
+			item = markRaw({ confirmation, confirm, cancel });
+			submitConfirmationsMut.value.push(item);
+		});
+	});
+
+	return {
+		submitConfirmations: computed(() => submitConfirmationsMut.value),
+		submitNotifications: computed(() => submitNotificationsMut.value),
+	};
 }
 
 export function useSubmit(options: any) {

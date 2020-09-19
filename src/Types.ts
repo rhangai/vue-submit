@@ -29,12 +29,20 @@ export type VueSubmitConfirmation = {
 	[key: string]: any;
 };
 
+export type VueSubmitConfirmationCallbackParams = {
+	defaultConfirmation: (confirmation: VueSubmitConfirmationValue) => Promise<boolean>;
+};
+export type VueSubmitConfirmationCallback = (
+	params: VueSubmitConfirmationCallbackParams
+) => boolean | Promise<boolean>;
+
 export type VueSubmitConfirmationValue =
 	| undefined
 	| null
 	| boolean
 	| string
-	| VueSubmitConfirmation;
+	| VueSubmitConfirmation
+	| VueSubmitConfirmationCallback;
 
 /**
  * Submit result
@@ -44,6 +52,17 @@ export type VueSubmitResult = {
 	error: Error | null;
 	response: unknown;
 };
+
+/**
+ * Submit result
+ */
+type VueSubmitValidateLike = { validate(): boolean | Promise<boolean> };
+type VueSubmitVuelidateLike = { $touch(): boolean; $invalid: boolean };
+export type VueSubmitValidateItem =
+	| boolean
+	| Promise<boolean>
+	| VueSubmitValidateLike
+	| VueSubmitVuelidateLike;
 
 export type VueSubmitOptions<Data = unknown> = Omit<AxiosRequestConfig, "data"> & {
 	/**
@@ -61,7 +80,9 @@ export type VueSubmitOptions<Data = unknown> = Omit<AxiosRequestConfig, "data"> 
 	 * - vuelidate: Allows vuelidate validators instances
 	 * - Array: Array of validators to test
 	 */
-	validator?: unknown | unknown[];
+	validate?:
+		| ValueOrCallback<VueSubmitValidateItem, undefined>
+		| ValueOrCallback<VueSubmitValidateItem, undefined>[];
 	/**
 	 * Options to show a confirmation dialog to the user.
 	 *

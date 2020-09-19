@@ -1,27 +1,27 @@
-import { SubmitManager } from "./SubmitManager";
-import { VueSubmitConfirmation, VueSubmitNotification } from "./Types";
-
-export type VueSubmitContext = {
-	submitManager: SubmitManager;
-};
+import {
+	SubmitManager,
+	SubmitManagerConfirmationCallback,
+	SubmitManagerNotificationCallback,
+} from "./SubmitManager";
 
 export type VueSubmitPluginOptions = {
-	notify(notification: VueSubmitNotification): Promise<void>;
-	confirm(confirmation: VueSubmitConfirmation): Promise<boolean>;
+	confirmationCallback?: SubmitManagerConfirmationCallback | null;
+	notificationCallback?: SubmitManagerNotificationCallback | null;
 };
 
 export const VueSubmitPlugin = {
+	/**
+	 * Install the plugin
+	 *
+	 * It sets $submit, $submitting and $submitErrors to be used globally
+	 */
 	install(vue: any, pluginOptions: VueSubmitPluginOptions) {
 		/* eslint-disable no-param-reassign */
-		vue.prototype.$submitContext = {
-			submitManager: new SubmitManager({
-				notify: pluginOptions.notify,
-				confirm: pluginOptions.confirm,
-			}),
-		} as VueSubmitContext;
+		const submitManager = new SubmitManager();
+		submitManager.setConfirmationCallback(pluginOptions.confirmationCallback ?? null);
+		submitManager.setNotificationCallback(pluginOptions.notificationCallback ?? null);
 		vue.prototype.$submit = function vueSubmit(key: string, options: any) {
 			if (!this.$submitSubmission) {
-				const submitManager = this.$submitContext.submitManager as SubmitManager;
 				this.$submitSubmission = submitManager.createSubmission({
 					skip: ({ key: submitKey }) => {
 						return this.$data.$submitting[submitKey];
