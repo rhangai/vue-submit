@@ -1,7 +1,22 @@
-import { inject, ref, computed } from "@vue/composition-api";
-import { VueSubmitContext } from "../Plugin";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { inject, ref, computed, provide } from "@vue/composition-api";
+import {
+	VueSubmitPlugin as ParentVueSubmitPlugin,
+	VueSubmitContext,
+	VueSubmitPluginOptions,
+} from "../Plugin";
 
 const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
+
+export const VueSubmitPlugin = {
+	install(vue: any, options: VueSubmitPluginOptions) {
+		ParentVueSubmitPlugin.install(vue, options);
+	},
+};
+
+export function provideSubmit(vue: any) {
+	provide(VUE_SUBMIT_KEY, vue.$submitContext);
+}
 
 export function useSubmit(options: any) {
 	const context = inject<VueSubmitContext | null>(VUE_SUBMIT_KEY, null);
@@ -16,6 +31,9 @@ export function useSubmit(options: any) {
 	const submitErrorMut = ref<Error | null>(null);
 
 	const submission = submitManager.createSubmission({
+		skip() {
+			return submittingMut.value;
+		},
 		hooks: {
 			beforeSubmit() {
 				submittingMut.value = true;

@@ -1,0 +1,1 @@
+export { VueSubmitPlugin } from "./Plugin";

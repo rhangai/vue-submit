@@ -8,9 +8,7 @@
 		"experimentalDecorators": true,
 		"esModuleInterop": true,
 		"types": ["@types/jest", "@types/vuelidate"],
-		"baseUrl": ".",
-		"declaration": true,
-		"rootDir": "src",
-		"outDir": "dist"
-	}
+		"baseUrl": "."
+	},
+	"exclude": ["dist/**/*"]
 }

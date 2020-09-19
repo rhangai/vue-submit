@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import type Vue from "vue";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { AxiosRequestConfig } from "axios";
 import { ValueOrCallback } from "./util/value";
 

@@ -1,20 +1,31 @@
 import { SubmitManager } from "./SubmitManager";
+import { VueSubmitConfirmation, VueSubmitNotification } from "./Types";
 
 export type VueSubmitContext = {
 	submitManager: SubmitManager;
 };
 
-export type VueSubmitPluginOptions = {};
+export type VueSubmitPluginOptions = {
+	notify(notification: VueSubmitNotification): Promise<void>;
+	confirm(confirmation: VueSubmitConfirmation): Promise<boolean>;
+};
 
-export const VueSubmit = {
+export const VueSubmitPlugin = {
 	install(vue: any, pluginOptions: VueSubmitPluginOptions) {
+		/* eslint-disable no-param-reassign */
 		vue.prototype.$submitContext = {
-			submitManager: new SubmitManager(),
+			submitManager: new SubmitManager({
+				notify: pluginOptions.notify,
+				confirm: pluginOptions.confirm,
+			}),
 		} as VueSubmitContext;
-		vue.prototype.$submit = function (key: string, options: any) {
+		vue.prototype.$submit = function vueSubmit(key: string, options: any) {
 			if (!this.$submitSubmission) {
 				const submitManager = this.$submitContext.submitManager as SubmitManager;
 				this.$submitSubmission = submitManager.createSubmission({
+					skip: ({ key: submitKey }) => {
+						return this.$data.$submitting[submitKey];
+					},
 					hooks: {
 						beforeSubmit: ({ key: submitKey }) => {
 							vue.set(this.$data.$submitting, submitKey, true);
