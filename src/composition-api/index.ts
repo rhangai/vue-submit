@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { inject, ref, computed, provide, markRaw } from "@vue/composition-api";
-import { SubmitManager } from "src/SubmitManager";
-import { VueSubmitOptions } from "src/Types";
+import { SubmitManager } from "../SubmitManager";
+import { VueSubmitOptions } from "../Types";
 
 const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
 
@@ -66,7 +66,7 @@ export function useSubmit<Data = unknown>(options: VueSubmitOptions<Data>) {
 	const context = inject<VueSubmitContext | null>(VUE_SUBMIT_KEY, null);
 	if (!context) {
 		throw new Error(
-			`Invalid vue-submit context. Did you call "provideSubmit" on a parent element?`
+			`Invalid vue-submit context. Did you call "useSubmitProvider" on a parent element?`
 		);
 	}
 	const { submitManager } = context;
