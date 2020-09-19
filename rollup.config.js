@@ -8,24 +8,9 @@ export default [
 		input: "src/index.ts",
 		external: ["vue"],
 		output: {
-			file: "dist/vue-submit.js",
-			format: "esm",
-			sourcemap: true
-		},
-		plugins: [
-			//
-			pluginNodeResolve(),
-			pluginCommonJs(),
-			pluginTypescript()
-		]
-	},
-	{
-		input: "src/index.ts",
-		external: ["vue"],
-		output: {
 			name: "VueSubmit",
 			file: "dist/vue-submit.umd.js",
-			format: "umd"
+			format: "umd",
 		},
 		plugins: [
 			//
@@ -35,8 +20,8 @@ export default [
 			pluginBabel({
 				exclude: "node_modules/**",
 				runtimeHelpers: true,
-				extensions: [".js", ".ts"]
-			})
-		]
-	}
+				extensions: [".js", ".ts"],
+			}),
+		],
+	},
 ];

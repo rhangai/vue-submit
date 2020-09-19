@@ -1,6 +1,7 @@
 {
 	"useTabs": true,
 	"trailingComma": "es5",
+	"printWidth": 100,
 	"overrides": [
 		{
 			"files": ["package.json"],

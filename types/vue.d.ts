@@ -1,9 +1,9 @@
 import Vue from "vue";
-import { VueSubmitFunction } from "./vue-submit";
+import { VueSubmitOptions } from "../dist/Types";
 
 declare module "vue/types/vue" {
 	interface Vue {
-		$submit: VueSubmitFunction;
+		$submit<Data = unknown>(options: VueSubmitOptions<Data>): Promise<void>;
 		$submitting: Record<string, boolean>;
 		$submitErrors: Record<string, Error>;
 	}

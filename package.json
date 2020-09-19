@@ -19,6 +19,7 @@
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/jest": "^26.0.13",
     "@types/vuelidate": "^0.7.13",
+    "@vue/composition-api": "^1.0.0-beta.14",
     "@vue/test-utils": "^1.0.5",
     "axios": "^0.20.0",
     "jest": "^26.4.2",

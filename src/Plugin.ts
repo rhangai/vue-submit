@@ -1,74 +1,55 @@
-import Vue, { VueConstructor } from "vue";
-import { VueSubmitManager } from "./VueSubmitManager";
-import {
-	VueSubmitFunction,
-	VueSubmitOptions,
-	VueSubmitPluginOptions
-} from "../types/vue-submit";
-import { serializeFormData } from "./util/SerializeFormData";
+import { SubmitManager } from "./SubmitManager";
 
-/**
- * Defines a new property
- * @param target The prototype
- * @param name Name of the property
- * @param getter The getter function
- */
-function defineProperty(
-	target: any,
-	name: string,
-	getter: (self: any) => unknown
-) {
-	Object.defineProperty(target, name, {
-		configurable: true,
-		get() {
-			const value = getter(this);
-			Object.defineProperty(this, name, {
-				configurable: false,
-				writable: false,
-				value
-			});
-			return value;
-		}
-	});
-}
-export class VueSubmitPlugin {
-	static createSubmit(
-		vue: VueConstructor,
-		vm: Vue,
-		pluginOptions: VueSubmitPluginOptions
-	): VueSubmitFunction {
-		const instance = new VueSubmitManager(vue, vm, pluginOptions);
-		const submit = function(name: string, options: VueSubmitOptions) {
-			return instance.submit(name, options);
+export type VueSubmitContext = {
+	submitManager: SubmitManager;
+};
+
+export type VueSubmitPluginOptions = {};
+
+export const VueSubmit = {
+	install(vue: any, pluginOptions: VueSubmitPluginOptions) {
+		vue.prototype.$submitContext = {
+			submitManager: new SubmitManager(),
+		} as VueSubmitContext;
+		vue.prototype.$submit = function (key: string, options: any) {
+			if (!this.$submitSubmission) {
+				const submitManager = this.$submitContext.submitManager as SubmitManager;
+				this.$submitSubmission = submitManager.createSubmission({
+					hooks: {
+						beforeSubmit: ({ key: submitKey }) => {
+							vue.set(this.$data.$submitting, submitKey, true);
+							vue.set(this.$data.$submitErrors, submitKey, null);
+						},
+						afterSubmit: ({ key: submitKey }) => {
+							vue.set(this.$data.$submitting, submitKey, false);
+						},
+						error: (error: Error, { key: submitKey }) => {
+							vue.set(this.$data.$submitting, submitKey, false);
+							vue.set(this.$data.$submitErrors, submitKey, error);
+						},
+					},
+				});
+			}
+			return this.$submitSubmission.submit(options, { key });
 		};
-		submit.serializeFormData = serializeFormData;
-		submit.$instance = instance;
-		return submit;
-	}
-	static install(
-		vue: VueConstructor,
-		pluginOptions: VueSubmitPluginOptions = {}
-	): void {
-		defineProperty(vue.prototype, "$submit", function(self: Vue) {
-			return VueSubmitPlugin.createSubmit(vue, self, pluginOptions);
-		});
-		Object.defineProperty(vue.prototype, "$submitting", {
-			get() {
-				return this.$data.$submitting;
-			}
-		});
-		Object.defineProperty(vue.prototype, "$submitErrors", {
-			get() {
-				return this.$data.$submitErrors;
-			}
-		});
+
 		vue.mixin({
 			data() {
 				return {
 					$submitting: {},
-					$submitErrors: {}
+					$submitErrors: {},
 				};
-			}
+			},
 		});
-	}
-}
+		Object.defineProperty(vue.prototype, "$submitting", {
+			get() {
+				return this.$data.$submitting;
+			},
+		});
+		Object.defineProperty(vue.prototype, "$submitErrors", {
+			get() {
+				return this.$data.$submitErrors;
+			},
+		});
+	},
+};
