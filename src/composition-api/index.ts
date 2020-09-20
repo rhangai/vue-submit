@@ -1,8 +1,7 @@
-/// <reference path="../../types/request.d.ts" />
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { inject, ref, computed, provide, markRaw } from "@vue/composition-api";
+import { inject, ref, computed, provide, markRaw, defineComponent } from "@vue/composition-api";
 import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
-import { SubmitManager } from "../SubmitManager";
+import { SubmitManager, SubmitManagerRequestFunction } from "../SubmitManager";
 import { VueSubmitOptions } from "../Types";
 
 const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
@@ -12,10 +11,79 @@ export type VueSubmitContext = {
 };
 
 export type VueSubmitProviderOptions = {
-	request(options: any): any;
+	request: SubmitManagerRequestFunction;
 };
 
-export function useSubmitProviderRaw() {
+export function submitHandlerCompatMixin(options: VueSubmitProviderOptions) {
+	return defineComponent({
+		provide() {
+			return {
+				[VUE_SUBMIT_KEY]: {
+					submitManager: this.$data.$submitManager,
+				},
+			};
+		},
+		data() {
+			return {
+				submitConfirmationId: 1,
+				submitConfirmations: [] as unknown[],
+				submitNotificationId: 1,
+				submitNotifications: [] as unknown[],
+				$submitManager: new SubmitManager(),
+			};
+		},
+		created(this: any) {
+			const submitManager = this.$data.$submitManager as SubmitManager;
+			submitManager.setRequestFunction(options.request);
+			submitManager.setConfirmationCallback((confirmation) =>
+				this.onSubmitConfirmation(confirmation)
+			);
+			submitManager.setNotificationCallback((notification, result) =>
+				this.onSubmitNotification(notification, result)
+			);
+		},
+		methods: {
+			onSubmitConfirmation(confirmation: any) {
+				return new Promise((resolve) => {
+					// eslint-disable-next-line no-plusplus
+					const thisConfirmationId = this.submitConfirmationId++;
+
+					const clearItem = () => {
+						const items: any[] = this.submitConfirmations;
+						const newItems = items.filter((i) => i.id !== thisConfirmationId);
+						this.submitConfirmations = newItems;
+					};
+					const confirm = () => {
+						clearItem();
+						resolve(true);
+					};
+					const cancel = () => {
+						clearItem();
+						resolve(false);
+					};
+					const item = Object.freeze({ confirmation, confirm, cancel });
+					this.submitConfirmations.push(item);
+				});
+			},
+			onSubmitNotification(notification: any, result: any) {
+				return new Promise((resolve) => {
+					// eslint-disable-next-line no-plusplus
+					const thisNotificationId = this.submitNotificationId++;
+					const close = () => {
+						const items: any[] = this.submitNotifications;
+						const newItems = items.filter((i) => i.id !== thisNotificationId);
+						this.submitNotifications = newItems;
+						resolve();
+					};
+					const item = Object.freeze({ id: thisNotificationId, notification, result, close });
+					this.submitNotifications.push(item);
+				});
+			},
+		},
+	});
+}
+
+export function useSubmitHandlerRaw() {
 	const submitManager = new SubmitManager();
 	provide<VueSubmitContext>(VUE_SUBMIT_KEY, { submitManager });
 	return {
@@ -23,8 +91,12 @@ export function useSubmitProviderRaw() {
 	};
 }
 
-export function useSubmitProvider(options: VueSubmitProviderOptions) {
-	const { submitManager } = useSubmitProviderRaw();
+/**
+ * Create a new submit handler using the context
+ * @param options
+ */
+export function useSubmitHandler(options: VueSubmitProviderOptions) {
+	const { submitManager } = useSubmitHandlerRaw();
 
 	const submitConfirmationsMut = ref<unknown[]>([]);
 	const submitNotificationsMut = ref<unknown[]>([]);
@@ -77,6 +149,10 @@ export function useSubmitProvider(options: VueSubmitProviderOptions) {
 	};
 }
 
+/**
+ * Use the submit funcition
+ * @param options
+ */
 export function useSubmit<Data = unknown, RequestOptions = VueSubmitRequestOptions>(
 	options: VueSubmitOptions<Data, RequestOptions>
 ) {
@@ -105,7 +181,7 @@ export function useSubmit<Data = unknown, RequestOptions = VueSubmitRequestOptio
 			},
 			error(error: Error) {
 				submittingMut.value = false;
-				submitErrorMut.value = error;
+				submitErrorMut.value = markRaw(error);
 			},
 		},
 	});

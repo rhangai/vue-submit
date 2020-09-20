@@ -1,12 +1,24 @@
-import { Submission, SubmissionOptions } from "./Submission";
+import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
 import {
+	VueSubmitConfirmationCallback,
 	VueSubmitConfirmation,
 	VueSubmitConfirmationValue,
 	VueSubmitNotification,
 	VueSubmitNotificationValue,
 	VueSubmitResult,
 } from "./Types";
+import { Submission, SubmissionOptions } from "./Submission";
+
 import { valueOrCallback, ValueOrCallback } from "./util/value";
+
+export type SubmitManagerRequestFunctionParams = {
+	data: unknown;
+	options: Omit<VueSubmitRequestOptions, "data">;
+};
+
+export type SubmitManagerRequestFunction = (
+	params: SubmitManagerRequestFunctionParams
+) => Promise<unknown>;
 
 export type SubmitManagerNotificationCallback = (
 	notification: VueSubmitNotification,
@@ -17,21 +29,15 @@ export type SubmitManagerConfirmationCallback = (
 	confirmation: VueSubmitConfirmation
 ) => Promise<boolean>;
 
+/**
+ * Manage every child submission
+ */
 export class SubmitManager {
-	private requestFn: ((options: any) => any) | null = null;
+	private requestFn: SubmitManagerRequestFunction | null = null;
 
 	private confirmationCallback: SubmitManagerConfirmationCallback | null = null;
 
 	private notificationCallback: SubmitManagerNotificationCallback | null = null;
-
-	setRequestFunction(requestFn: ((options: any) => any) | null) {
-		this.requestFn = requestFn;
-	}
-
-	callRequestFunction(options: any) {
-		if (!this.requestFn) throw new Error(`Invalid request funciton`);
-		return this.requestFn(options);
-	}
 
 	setNotificationCallback(callback: SubmitManagerNotificationCallback | null) {
 		this.notificationCallback = callback;
@@ -40,6 +46,18 @@ export class SubmitManager {
 	/// Set the confirmation callback
 	setConfirmationCallback(callback: SubmitManagerConfirmationCallback | null) {
 		this.confirmationCallback = callback;
+	}
+
+	/**
+	 * Set the request function
+	 */
+	setRequestFunction(requestFn: SubmitManagerRequestFunction | null) {
+		this.requestFn = requestFn;
+	}
+
+	callRequestFunction(params: SubmitManagerRequestFunctionParams) {
+		if (!this.requestFn) throw new Error(`Invalid request funciton`);
+		return this.requestFn(params);
 	}
 
 	/**
@@ -74,7 +92,9 @@ export class SubmitManager {
 	/**
 	 * Ask for confirmation
 	 */
-	async confirm(confirmationValue: VueSubmitConfirmationValue): Promise<boolean> {
+	async confirm(
+		confirmationValue: VueSubmitConfirmationValue | VueSubmitConfirmationCallback
+	): Promise<boolean> {
 		if (!confirmationValue) return true;
 		if (confirmationValue === true) {
 			if (!this.confirmationCallback) return true;

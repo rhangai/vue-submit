@@ -2,6 +2,7 @@ import type { SubmitManager } from "./SubmitManager";
 import { VueSubmitOptions, VueSubmitResult, VueSubmitValidateItem } from "./Types";
 import { isValidateLike, isVuelidateLike } from "./util/validate";
 import { valueOrCallback, ValueOrCallback } from "./util/value";
+import { serializeFormData } from "./util/form-data";
 
 export type SubmissionOptions = {
 	skip(context: any): boolean;
@@ -26,11 +27,11 @@ export class Submission {
 			const result = await this.doSubmit(options);
 			this.submissionOptions.hooks.afterSubmit(context);
 			if (result) {
-				await this.submitManager.notify(options.success, result);
+				await this.submitManager.notify(options.onSuccess, result);
 			}
 		} catch (err) {
 			this.submissionOptions.hooks.error(err, context);
-			await this.submitManager.notify(options.error, {
+			await this.submitManager.notify(options.onError, {
 				data: null,
 				error: err,
 				response: null,
@@ -55,7 +56,7 @@ export class Submission {
 
 		const response = await this.doRequest(options);
 		return {
-			data: null,
+			data: (response as any)?.data ?? null,
 			error: null,
 			response,
 		};
@@ -101,9 +102,16 @@ export class Submission {
 		delete requestOptions.data;
 		delete requestOptions.validate;
 		delete requestOptions.confirmation;
-		delete requestOptions.success;
-		delete requestOptions.error;
-		delete requestOptions.download;
-		return this.submitManager.callRequestFunction(requestOptions);
+		delete requestOptions.onSuccess;
+		delete requestOptions.onError;
+
+		const data = await valueOrCallback(options.data, {
+			serializeFormData,
+		});
+
+		return this.submitManager.callRequestFunction({
+			data,
+			options: requestOptions,
+		});
 	}
 }

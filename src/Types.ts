@@ -1,6 +1,4 @@
-/// <reference path="../types/request.d.ts" />
 // eslint-disable-next-line import/no-extraneous-dependencies
-import type Vue from "vue";
 import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
 import { ValueOrCallback } from "./util/value";
 
@@ -41,14 +39,13 @@ export type VueSubmitConfirmationValue =
 	| null
 	| boolean
 	| string
-	| VueSubmitConfirmation
-	| VueSubmitConfirmationCallback;
+	| VueSubmitConfirmation;
 
 /**
  * Submit result
  */
 export type VueSubmitResult = {
-	data: any;
+	data: unknown;
 	error: Error | null;
 	response: unknown;
 };
@@ -64,14 +61,21 @@ export type VueSubmitValidateItem =
 	| VueSubmitValidateLike
 	| VueSubmitVuelidateLike;
 
+/**
+ * Callback parameters
+ */
+export type VueSubmitOptionsDataCallbackParams = {
+	serializeFormData(obj: any): FormData;
+};
+
 export type VueSubmitOptions<Data = unknown, RequestOptions = VueSubmitRequestOptions> = Omit<
 	RequestOptions,
-	"data" | "validate" | "confirmation" | "download" | "success" | "error"
+	"data" | "validate" | "confirmation" | "onSuccess" | "onError"
 > & {
 	/**
 	 * The data to use on submission
 	 */
-	data?: Data | (() => Data | Promise<Data>);
+	data?: ValueOrCallback<Data, VueSubmitOptionsDataCallbackParams>;
 	/**
 	 * Validators to verify
 	 *
@@ -92,26 +96,17 @@ export type VueSubmitOptions<Data = unknown, RequestOptions = VueSubmitRequestOp
 	 * - function: Must return a boolean or a Promise<boolean> that indicates wheter or not the user
 	 *   confirmed the operation. The function will accept the vue instance and the default confirmation handler
 	 */
-	confirmation?:
-		| VueSubmitConfirmationValue
-		| ((
-				vm: Vue,
-				defaultConfirmation: (confirmation: VueSubmitConfirmationValue) => Promise<boolean>
-		  ) => boolean | Promise<boolean>);
-	/**
-	 * Triggers/Expects a download when performing the request.
-	 */
-	download?: boolean | string | VueSubmitDownloadOptions;
+	confirmation?: VueSubmitConfirmationValue | VueSubmitConfirmationCallback;
 	/**
 	 * Callback on success / Options to notify in case of success
 	 *
 	 * This functions also returns the notification
 	 */
-	success?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>;
+	onSuccess?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>;
 	/**
 	 * Callback on error
 	 *
 	 * This functions also returns the notification
 	 */
-	error?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>;
+	onError?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>;
 };

@@ -1,3 +1,4 @@
+import type { VueConstructor } from "vue";
 import {
 	SubmitManager,
 	SubmitManagerConfirmationCallback,
@@ -16,14 +17,27 @@ export const VueSubmitPlugin = {
 	 *
 	 * It sets $submit, $submitting and $submitErrors to be used globally
 	 */
-	install(vue: any, pluginOptions: VueSubmitPluginOptions) {
-		/* eslint-disable no-param-reassign */
+	install(vue: VueConstructor, pluginOptions: VueSubmitPluginOptions) {
 		const submitManager = new SubmitManager();
+		submitManager.setRequestFunction(pluginOptions.request);
 		submitManager.setConfirmationCallback(pluginOptions.confirmationCallback ?? null);
 		submitManager.setNotificationCallback(pluginOptions.notificationCallback ?? null);
+
+		// eslint-disable-next-line no-param-reassign
+		vue.prototype.$submitManager = submitManager;
+
+		// eslint-disable-next-line no-param-reassign
 		vue.prototype.$submit = function vueSubmit(key: string, options: any) {
 			if (!this.$submitSubmission) {
-				this.$submitSubmission = submitManager.createSubmission({
+				let component = this;
+				let thisSubmitManager: SubmitManager | null = null;
+				while (component) {
+					thisSubmitManager = component.$data.$submitManager;
+					if (thisSubmitManager) break;
+					component = component.$parent;
+				}
+				if (!thisSubmitManager) thisSubmitManager = submitManager;
+				this.$submitSubmission = thisSubmitManager.createSubmission({
 					skip: ({ key: submitKey }) => {
 						return this.$data.$submitting[submitKey];
 					},
