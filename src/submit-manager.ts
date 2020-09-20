@@ -1,4 +1,4 @@
-import type { VueSubmitRequestOptions } from "./request";
+import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/lib/request";
 import {
 	VueSubmitConfirmationCallback,
 	VueSubmitConfirmation,

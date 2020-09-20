@@ -2,5 +2,4 @@
 !/package.json
 !/README.md
 !/dist/**/*
-!/index.d.ts
-!/types/**/*
+!/lib/**/*
