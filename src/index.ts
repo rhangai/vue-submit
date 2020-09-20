@@ -1,1 +1,1 @@
-export { VueSubmitPlugin } from "./Plugin";
+export { VueSubmitCompatPlugin, VueSubmitCompatPluginOptions } from "./Plugin";

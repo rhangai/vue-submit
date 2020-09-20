@@ -1,25 +1,26 @@
 import type { VueConstructor } from "vue";
 import {
 	SubmitManager,
+	SubmitManagerRequestFunction,
 	SubmitManagerConfirmationCallback,
 	SubmitManagerNotificationCallback,
 } from "./SubmitManager";
 
-export type VueSubmitPluginOptions = {
-	request(options: any): any;
+export type VueSubmitCompatPluginOptions = {
+	request?: SubmitManagerRequestFunction | null;
 	confirmationCallback?: SubmitManagerConfirmationCallback | null;
 	notificationCallback?: SubmitManagerNotificationCallback | null;
 };
 
-export const VueSubmitPlugin = {
+export const VueSubmitCompatPlugin = {
 	/**
 	 * Install the plugin
 	 *
 	 * It sets $submit, $submitting and $submitErrors to be used globally
 	 */
-	install(vue: VueConstructor, pluginOptions: VueSubmitPluginOptions) {
+	install(vue: VueConstructor, pluginOptions: VueSubmitCompatPluginOptions = {}) {
 		const submitManager = new SubmitManager();
-		submitManager.setRequestFunction(pluginOptions.request);
+		submitManager.setRequestFunction(pluginOptions.request ?? null);
 		submitManager.setConfirmationCallback(pluginOptions.confirmationCallback ?? null);
 		submitManager.setNotificationCallback(pluginOptions.notificationCallback ?? null);
 
