@@ -1,5 +1,7 @@
+/// <reference path="../../types/request.d.ts" />
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { inject, ref, computed, provide, markRaw } from "@vue/composition-api";
+import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
 import { SubmitManager } from "../SubmitManager";
 import { VueSubmitOptions } from "../Types";
 
@@ -7,6 +9,10 @@ const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
 
 export type VueSubmitContext = {
 	submitManager: SubmitManager;
+};
+
+export type VueSubmitProviderOptions = {
+	request(options: any): any;
 };
 
 export function useSubmitProviderRaw() {
@@ -17,30 +23,39 @@ export function useSubmitProviderRaw() {
 	};
 }
 
-export function useSubmitProvider() {
+export function useSubmitProvider(options: VueSubmitProviderOptions) {
 	const { submitManager } = useSubmitProviderRaw();
 
 	const submitConfirmationsMut = ref<unknown[]>([]);
 	const submitNotificationsMut = ref<unknown[]>([]);
 
+	submitManager.setRequestFunction(options.request);
+
+	let notificationId = 1;
 	submitManager.setNotificationCallback((notification, result) => {
 		return new Promise((resolve) => {
-			let item: any;
+			// eslint-disable-next-line no-plusplus
+			const thisNotificationId = notificationId++;
 			const close = () => {
-				const newItems = submitNotificationsMut.value.filter((i) => i !== item);
+				const items: any[] = submitNotificationsMut.value;
+				const newItems = items.filter((i) => i.id !== thisNotificationId);
 				submitNotificationsMut.value = newItems;
 				resolve();
 			};
-			item = markRaw({ notification, result, close });
+			const item = markRaw({ id: thisNotificationId, notification, result, close });
 			submitNotificationsMut.value.push(item);
 		});
 	});
 
+	let confirmationId = 1;
 	submitManager.setConfirmationCallback((confirmation) => {
 		return new Promise((resolve) => {
-			let item: any;
+			// eslint-disable-next-line no-plusplus
+			const thisConfirmationId = confirmationId++;
+
 			const clearItem = () => {
-				const newItems = submitConfirmationsMut.value.filter((i) => i !== item);
+				const items: any[] = submitConfirmationsMut.value;
+				const newItems = items.filter((i) => i.id !== thisConfirmationId);
 				submitConfirmationsMut.value = newItems;
 			};
 			const confirm = () => {
@@ -51,7 +66,7 @@ export function useSubmitProvider() {
 				clearItem();
 				resolve(false);
 			};
-			item = markRaw({ confirmation, confirm, cancel });
+			const item = markRaw({ confirmation, confirm, cancel });
 			submitConfirmationsMut.value.push(item);
 		});
 	});
@@ -62,7 +77,9 @@ export function useSubmitProvider() {
 	};
 }
 
-export function useSubmit<Data = unknown>(options: VueSubmitOptions<Data>) {
+export function useSubmit<Data = unknown, RequestOptions = VueSubmitRequestOptions>(
+	options: VueSubmitOptions<Data, RequestOptions>
+) {
 	const context = inject<VueSubmitContext | null>(VUE_SUBMIT_KEY, null);
 	if (!context) {
 		throw new Error(

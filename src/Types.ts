@@ -1,7 +1,7 @@
+/// <reference path="../types/request.d.ts" />
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type Vue from "vue";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { AxiosRequestConfig } from "axios";
+import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
 import { ValueOrCallback } from "./util/value";
 
 export type VueSubmitDownloadOptions = {
@@ -64,11 +64,10 @@ export type VueSubmitValidateItem =
 	| VueSubmitValidateLike
 	| VueSubmitVuelidateLike;
 
-export type VueSubmitOptions<Data = unknown> = Omit<AxiosRequestConfig, "data"> & {
-	/**
-	 * Axios instance to use on the current request
-	 */
-	axios?: unknown;
+export type VueSubmitOptions<Data = unknown, RequestOptions = VueSubmitRequestOptions> = Omit<
+	RequestOptions,
+	"data" | "validate" | "confirmation" | "download" | "success" | "error"
+> & {
 	/**
 	 * The data to use on submission
 	 */

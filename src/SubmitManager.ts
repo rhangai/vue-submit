@@ -18,22 +18,41 @@ export type SubmitManagerConfirmationCallback = (
 ) => Promise<boolean>;
 
 export class SubmitManager {
+	private requestFn: ((options: any) => any) | null = null;
+
 	private confirmationCallback: SubmitManagerConfirmationCallback | null = null;
 
 	private notificationCallback: SubmitManagerNotificationCallback | null = null;
 
-	createSubmission(options: SubmissionOptions): Submission {
-		return new Submission(this, options);
+	setRequestFunction(requestFn: ((options: any) => any) | null) {
+		this.requestFn = requestFn;
+	}
+
+	callRequestFunction(options: any) {
+		if (!this.requestFn) throw new Error(`Invalid request funciton`);
+		return this.requestFn(options);
 	}
 
 	setNotificationCallback(callback: SubmitManagerNotificationCallback | null) {
 		this.notificationCallback = callback;
 	}
 
+	/// Set the confirmation callback
 	setConfirmationCallback(callback: SubmitManagerConfirmationCallback | null) {
 		this.confirmationCallback = callback;
 	}
 
+	/**
+	 * Create a new submission
+	 * @param options The submission options
+	 */
+	createSubmission(submissionOptions: SubmissionOptions): Submission {
+		return new Submission(this, submissionOptions);
+	}
+
+	/**
+	 * Notify the status of the submission
+	 */
 	async notify(
 		notificationValue: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>,
 		result: VueSubmitResult
@@ -52,6 +71,9 @@ export class SubmitManager {
 		return value;
 	}
 
+	/**
+	 * Ask for confirmation
+	 */
 	async confirm(confirmationValue: VueSubmitConfirmationValue): Promise<boolean> {
 		if (!confirmationValue) return true;
 		if (confirmationValue === true) {

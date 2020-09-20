@@ -2,10 +2,12 @@
 import Vue from "vue";
 import type { VueSubmitOptions } from "../dist/Types";
 
+interface VueSubmitProperties {
+	$submit<Data = unknown>(options: VueSubmitOptions<Data>): Promise<void>;
+	$submitting: Record<string, boolean>;
+	$submitErrors: Record<string, Error>;
+}
+
 declare module "vue/types/vue" {
-	interface Vue {
-		$submit<Data = unknown>(options: VueSubmitOptions<Data>): Promise<void>;
-		$submitting: Record<string, boolean>;
-		$submitErrors: Record<string, Error>;
-	}
+	interface Vue extends VueSubmitProperties {}
 }

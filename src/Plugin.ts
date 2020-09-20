@@ -5,6 +5,7 @@ import {
 } from "./SubmitManager";
 
 export type VueSubmitPluginOptions = {
+	request(options: any): any;
 	confirmationCallback?: SubmitManagerConfirmationCallback | null;
 	notificationCallback?: SubmitManagerNotificationCallback | null;
 };
