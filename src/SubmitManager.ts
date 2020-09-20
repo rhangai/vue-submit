@@ -14,6 +14,7 @@ import { valueOrCallback, ValueOrCallback } from "./util/value";
 export type SubmitManagerRequestFunctionParams = {
 	data: unknown;
 	options: Omit<VueSubmitRequestOptions, "data">;
+	context?: unknown;
 };
 
 export type SubmitManagerRequestFunction = (

@@ -45,7 +45,10 @@ export class Submission {
 	 *   - Ask for confirmation
 	 *   - Perform the request
 	 */
-	private async doSubmit<Data>(options: VueSubmitOptions<Data>): Promise<VueSubmitResult | null> {
+	private async doSubmit<Data>(
+		options: VueSubmitOptions<Data>,
+		context?: any
+	): Promise<VueSubmitResult | null> {
 		if (options.validate) {
 			const isValid = await this.doValidate([].concat(options.validate as any));
 			if (!isValid) throw new Error(`Invalid`);
@@ -54,7 +57,7 @@ export class Submission {
 		const isConfirmed = await this.submitManager.confirm(options.confirmation);
 		if (!isConfirmed) return null;
 
-		const response = await this.doRequest(options);
+		const response = await this.doRequest(options, context);
 		return {
 			data: (response as any)?.data ?? null,
 			error: null,
@@ -97,7 +100,7 @@ export class Submission {
 	 * Validate every item on the validate options
 	 * @param items
 	 */
-	private async doRequest<Data>(options: VueSubmitOptions<Data>): Promise<unknown> {
+	private async doRequest<Data>(options: VueSubmitOptions<Data>, context?: any): Promise<unknown> {
 		const requestOptions = { ...options };
 		delete requestOptions.data;
 		delete requestOptions.validate;
@@ -112,6 +115,7 @@ export class Submission {
 		return this.submitManager.callRequestFunction({
 			data,
 			options: requestOptions,
+			context,
 		});
 	}
 }
