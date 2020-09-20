@@ -3,6 +3,9 @@ import Vue from "vue";
 import type { VueSubmitOptions } from "../dist/Types";
 
 interface VueSubmitProperties {
+	/**
+	 * @deprecated Use the new composition-api
+	 */
 	$submit<Data = unknown>(key: string, options: VueSubmitOptions<Data>): Promise<void>;
 	$submitting: Record<string, boolean>;
 	$submitErrors: Record<string, Error>;
