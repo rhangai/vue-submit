@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { inject, ref, computed, markRaw } from "@vue/composition-api";
-import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
-import { VueSubmitOptions } from "../Types";
+import { VueSubmitOptions } from "../types";
+import type { VueSubmitRequestOptions } from "../request";
 import { VueSubmitContext, VUE_SUBMIT_KEY } from "./types";
 
 /**

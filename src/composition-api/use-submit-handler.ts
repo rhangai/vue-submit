@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ref, computed, provide, markRaw } from "@vue/composition-api";
-import { SubmitManager } from "../SubmitManager";
+import { SubmitManager } from "../submit-manager";
 import { VueSubmitContext, VueSubmitProviderOptions, VUE_SUBMIT_KEY } from "./types";
 
 export function useSubmitHandlerRaw() {

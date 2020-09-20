@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/types/request";
+import type { VueSubmitRequestOptions } from "./request";
 import { ValueOrCallback } from "./util/value";
 
 export type VueSubmitDownloadOptions = {

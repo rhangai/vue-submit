@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, @typescript-eslint/no-unused-vars
 import Vue from "vue";
-import type { VueSubmitOptions } from "../dist/Types";
+import type { VueSubmitOptions } from "../types";
 
 interface VueSubmitProperties {
 	/**

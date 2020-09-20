@@ -5,11 +5,11 @@ import pluginBabel from "rollup-plugin-babel";
 
 export default [
 	{
-		input: "src/index.ts",
+		input: "src/compat/index.ts",
 		external: ["vue"],
 		output: {
 			name: "VueSubmit",
-			file: "dist/bundle/vue-submit.umd.js",
+			file: "dist/vue-submit.compat.umd.js",
 			format: "umd",
 		},
 		plugins: [
@@ -29,7 +29,7 @@ export default [
 		external: ["vue", "@vue/composition-api"],
 		output: {
 			name: "VueSubmit",
-			file: "dist/bundle/vue-submit.composition-api.umd.js",
+			file: "dist/vue-submit.composition-api.umd.js",
 			format: "umd",
 			globals: {
 				"@vue/composition-api": "VueCompositionAPI",

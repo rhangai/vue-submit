@@ -4,7 +4,7 @@ import {
 	SubmitManagerRequestFunction,
 	SubmitManagerConfirmationCallback,
 	SubmitManagerNotificationCallback,
-} from "./SubmitManager";
+} from "../submit-manager";
 
 export type VueSubmitCompatPluginOptions = {
 	request?: SubmitManagerRequestFunction | null;

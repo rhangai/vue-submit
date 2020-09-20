@@ -1,4 +1,4 @@
-import { SubmitManager, SubmitManagerRequestFunction } from "../SubmitManager";
+import { SubmitManager, SubmitManagerRequestFunction } from "../submit-manager";
 
 export const VUE_SUBMIT_KEY = "VUE_SUBMIT_KEY";
 

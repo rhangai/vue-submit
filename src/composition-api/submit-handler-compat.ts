@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { defineComponent } from "@vue/composition-api";
-import { SubmitManager } from "../SubmitManager";
+import { SubmitManager } from "../submit-manager";
 import { VUE_SUBMIT_KEY, VueSubmitProviderOptions } from "./types";
 
 export function submitHandlerCompatMixin(options: VueSubmitProviderOptions) {

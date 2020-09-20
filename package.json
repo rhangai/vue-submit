@@ -46,7 +46,7 @@
     "vuelidate": "^0.7.5"
   },
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf lib",
     "build:bundle": "rollup -c rollup.config.js",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build": "run-s -s build:tsc build:bundle",

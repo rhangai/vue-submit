@@ -7,8 +7,8 @@
 		"lib": ["es2018", "dom"],
 		"experimentalDecorators": true,
 		"esModuleInterop": true,
-		"types": ["./types/request", "@types/jest", "@types/vuelidate"],
+		"types": ["@types/jest", "@types/vuelidate"],
 		"baseUrl": "."
 	},
-	"exclude": ["dist/**/*"]
+	"exclude": ["dist/**/*", "lib/**/*"]
 }

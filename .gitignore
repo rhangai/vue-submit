@@ -5,8 +5,8 @@
 ~*
 
 # Build files
+/lib
 /dist
-/build
 /coverage
 
 # Vendor

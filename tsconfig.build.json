@@ -3,8 +3,8 @@
 	"compilerOptions": {
 		"declaration": true,
 		"rootDir": "src",
-		"outDir": "dist",
-		"types": ["./types/request"]
+		"outDir": "lib",
+		"types": []
 	},
 	"include": ["./src/**/*"]
 }

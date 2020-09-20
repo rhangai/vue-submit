@@ -1,5 +1,5 @@
-import type { SubmitManager } from "./SubmitManager";
-import { VueSubmitOptions, VueSubmitResult, VueSubmitValidateItem } from "./Types";
+import type { SubmitManager } from "./submit-manager";
+import { VueSubmitOptions, VueSubmitResult, VueSubmitValidateItem } from "./types";
 import { isValidateLike, isVuelidateLike } from "./util/validate";
 import { valueOrCallback, ValueOrCallback } from "./util/value";
 import { serializeFormData } from "./util/form-data";
