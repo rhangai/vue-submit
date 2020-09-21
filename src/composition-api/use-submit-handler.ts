@@ -61,6 +61,7 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 	let confirmationId = 1;
 	submitManager.setConfirmationCallback((confirmation) => {
 		return new Promise((resolve) => {
+			let item: any;
 			// eslint-disable-next-line no-plusplus
 			const thisConfirmationId = confirmationId++;
 
@@ -69,16 +70,33 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 				const newItems = items.filter((i) => i.id !== thisConfirmationId);
 				submitConfirmationsMut.value = newItems;
 			};
-			const confirm = () => {
-				clearItem();
-				resolve(true);
+
+			const resolveConfirmation = (status: boolean, delay?: number | null) => {
+				resolve(!!status);
+				if (!delay) {
+					clearItem();
+					return;
+				}
+				setTimeout(clearItem, delay);
+				item.active = false;
 			};
-			const cancel = () => {
-				clearItem();
-				resolve(false);
+			const confirm = (delay?: number | null) => {
+				resolveConfirmation(true, delay);
 			};
-			const item = markRaw({ confirmation, confirm, cancel });
+			const cancel = (delay?: number | null) => {
+				resolveConfirmation(false, delay);
+			};
+			item = reactive({
+				active: false,
+				confirmation: markRaw(confirmation),
+				resolve: resolveConfirmation,
+				confirm,
+				cancel,
+			});
 			submitConfirmationsMut.value.push(item);
+			nextTick(() => {
+				item.active = true;
+			});
 		});
 	});
 
