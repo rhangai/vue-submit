@@ -24,7 +24,7 @@ export type SubmitManagerRequestFunction = (
 export type SubmitManagerNotificationCallback = (
 	notification: VueSubmitNotification,
 	result: VueSubmitResult
-) => Promise<void>;
+) => void;
 
 export type SubmitManagerConfirmationCallback = (
 	confirmation: VueSubmitConfirmation
@@ -79,7 +79,7 @@ export class SubmitManager {
 		const value = await valueOrCallback(notificationValue, result);
 		const notification = this.normalizeNotification(value);
 		if (notification) {
-			await this.notificationCallback?.(notification, result);
+			this.notificationCallback?.(notification, result);
 		}
 	}
 

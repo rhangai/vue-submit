@@ -25,18 +25,36 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 
 	let notificationId = 1;
 	submitManager.setNotificationCallback((notification, result) => {
-		return new Promise((resolve) => {
-			// eslint-disable-next-line no-plusplus
-			const thisNotificationId = notificationId++;
-			const close = () => {
-				const items: any[] = submitNotificationsMut.value;
-				const newItems = items.filter((i) => i.id !== thisNotificationId);
-				submitNotificationsMut.value = newItems;
-				resolve();
-			};
-			const item = markRaw({ id: thisNotificationId, notification, result, close });
-			submitNotificationsMut.value.push(item);
+		let isClosed = false;
+		// eslint-disable-next-line no-plusplus
+		const thisNotificationId = notificationId++;
+
+		const active = ref(true);
+
+		const removeNotification = () => {
+			const items: any[] = submitNotificationsMut.value;
+			const newItems = items.filter((i) => i.id !== thisNotificationId);
+			submitNotificationsMut.value = newItems;
+		};
+
+		const close = (delay?: number | null) => {
+			if (isClosed) return;
+			isClosed = true;
+			if (!delay) {
+				removeNotification();
+				return;
+			}
+			setTimeout(removeNotification, delay);
+			active.value = false;
+		};
+		const item = markRaw({
+			id: thisNotificationId,
+			active,
+			notification,
+			result,
+			close,
 		});
+		submitNotificationsMut.value.push(item);
 	});
 
 	let confirmationId = 1;
