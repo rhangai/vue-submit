@@ -52,6 +52,16 @@ export type VueSubmitResult = {
 	error: Error | null;
 	response: VueSubmitResponse | null;
 };
+export type VueSubmitResultSuccess = {
+	data: unknown | null;
+	error: null;
+	response: VueSubmitResponse;
+};
+export type VueSubmitResultError = {
+	data: unknown | null;
+	error: Error;
+	response: VueSubmitResponse | null;
+};
 
 /**
  * Submit result
@@ -105,11 +115,11 @@ export type VueSubmitOptions<Data = unknown, RequestOptions = VueSubmitRequestOp
 	 *
 	 * This functions also returns the notification
 	 */
-	onSuccess?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>;
+	onSuccess?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResultSuccess>;
 	/**
 	 * Callback on error
 	 *
 	 * This functions also returns the notification
 	 */
-	onError?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResult>;
+	onError?: ValueOrCallback<VueSubmitNotificationValue, VueSubmitResultError>;
 };
