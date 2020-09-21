@@ -1,6 +1,6 @@
 {
   "name": "@rhangai/vue-submit",
-  "version": "3.0.0-beta.1",
+  "version": "2.0.8",
   "description": "Vue submit helper",
   "repository": "git@github.com:rhangai/vue-submit.git",
   "author": "rhangai <hangai.renan@gmail.com>",
@@ -34,7 +34,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.27.1",
     "rollup-plugin-babel": "^4.4.0",
-    "standard-version": "^9.0.0",
+    "semantic-release": "^17.1.2",
     "ts-jest": "^26.3.0",
     "tslib": "^2.0.1",
     "typescript": "^4.0.3",
@@ -47,9 +47,7 @@
     "build:bundle": "rollup -c rollup.config.js",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build": "run-s -s build:tsc build:bundle",
-    "prerelease": "run-s test",
-    "release": "standard-version",
-    "prepack": "run-s clean build",
-    "test": "jest"
+    "release": "semantic-release",
+    "prepack": "run-s clean build"
   }
 }
