@@ -1,6 +1,6 @@
 {
   "name": "@rhangai/vue-submit",
-  "version": "2.0.8",
+  "version": "3.0.0-beta.0",
   "description": "Vue submit helper",
   "repository": "git@github.com:rhangai/vue-submit.git",
   "author": "rhangai <hangai.renan@gmail.com>",

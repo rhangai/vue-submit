@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.0](https://github.com/rhangai/vue-submit/compare/v2.0.8...v3.0.0-beta.0) (2020-09-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Everything was reworked
+
+### Features
+
+* New vue-composition-api functionality ([6e7a493](https://github.com/rhangai/vue-submit/commit/6e7a4934a0ea4b687f809e3c6bdf766cff8bc85f))
+
+
+### Bug Fixes
+
+* Export on main index.d.ts ([66f5728](https://github.com/rhangai/vue-submit/commit/66f5728c23c33cc38d4eff42229382b3f2bb7928))
+
 ### [2.0.8](https://github.com/rhangai/vue-submit/compare/v2.0.7...v2.0.8) (2020-09-12)
 
 ### [2.0.7](https://github.com/rhangai/vue-submit/compare/v2.0.6...v2.0.7) (2020-09-08)
