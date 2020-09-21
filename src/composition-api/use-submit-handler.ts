@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ref, computed, provide, markRaw } from "@vue/composition-api";
+import { ref, computed, provide, markRaw, nextTick } from "@vue/composition-api";
 import { SubmitManager } from "../submit-manager";
 import { VueSubmitContext, VueSubmitProviderOptions, VUE_SUBMIT_KEY } from "./types";
 
@@ -29,7 +29,7 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 		// eslint-disable-next-line no-plusplus
 		const thisNotificationId = notificationId++;
 
-		const active = ref(true);
+		const active = ref(false);
 
 		const removeNotification = () => {
 			const items: any[] = submitNotificationsMut.value;
@@ -55,6 +55,9 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 			close,
 		});
 		submitNotificationsMut.value.push(item);
+		nextTick(() => {
+			active.value = true;
+		});
 	});
 
 	let confirmationId = 1;
