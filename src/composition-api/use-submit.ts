@@ -2,7 +2,7 @@
 import { inject, ref, computed, markRaw } from "@vue/composition-api";
 import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/lib/request";
 import { VueSubmitOptions } from "../types";
-import { VueSubmitContext, VUE_SUBMIT_KEY } from "./types";
+import { VUE_SUBMIT_KEY } from "./types";
 
 /**
  * Use the submit funcition
@@ -11,7 +11,7 @@ import { VueSubmitContext, VUE_SUBMIT_KEY } from "./types";
 export function useSubmit<Data = unknown, RequestOptions = VueSubmitRequestOptions>(
 	options: VueSubmitOptions<Data, RequestOptions>
 ) {
-	const context = inject<VueSubmitContext | null>(VUE_SUBMIT_KEY, null);
+	const context = inject(VUE_SUBMIT_KEY, null);
 	if (!context) {
 		throw new Error(
 			`Invalid vue-submit context. Did you call "useSubmitProvider" on a parent element?`

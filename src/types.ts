@@ -1,6 +1,8 @@
 /// <reference path="./request.ts" />
+/// <reference path="./response.ts" />
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/lib/request";
+import type { VueSubmitResponse } from "@rhangai/vue-submit/lib/response";
 import { ValueOrCallback } from "./util/value";
 
 export type VueSubmitDownloadOptions = {
@@ -46,9 +48,9 @@ export type VueSubmitConfirmationValue =
  * Submit result
  */
 export type VueSubmitResult = {
-	data: unknown;
+	data: unknown | null;
 	error: Error | null;
-	response: unknown;
+	response: VueSubmitResponse | null;
 };
 
 /**

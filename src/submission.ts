@@ -1,3 +1,4 @@
+import { VueSubmitResponse } from "@rhangai/vue-submit/lib/response";
 import type { SubmitManager } from "./submit-manager";
 import { VueSubmitOptions, VueSubmitResult, VueSubmitValidateItem } from "./types";
 import { isValidateLike, isVuelidateLike } from "./util/validate";
@@ -100,7 +101,10 @@ export class Submission {
 	 * Validate every item on the validate options
 	 * @param items
 	 */
-	private async doRequest<Data>(options: VueSubmitOptions<Data>, context?: any): Promise<unknown> {
+	private async doRequest<Data>(
+		options: VueSubmitOptions<Data>,
+		context?: any
+	): Promise<VueSubmitResponse> {
 		const requestOptions = { ...options };
 		delete requestOptions.data;
 		delete requestOptions.validate;

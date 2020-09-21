@@ -1,4 +1,5 @@
 import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/lib/request";
+import { VueSubmitResponse } from "@rhangai/vue-submit/lib/response";
 import {
 	VueSubmitConfirmationCallback,
 	VueSubmitConfirmation,
@@ -19,7 +20,7 @@ export type SubmitManagerRequestFunctionParams = {
 
 export type SubmitManagerRequestFunction = (
 	params: SubmitManagerRequestFunctionParams
-) => Promise<unknown>;
+) => Promise<VueSubmitResponse>;
 
 export type SubmitManagerNotificationCallback = (
 	notification: VueSubmitNotification,
