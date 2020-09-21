@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ref, computed, provide, markRaw, nextTick } from "@vue/composition-api";
+import { ref, computed, provide, markRaw, nextTick, reactive } from "@vue/composition-api";
 import { SubmitManager } from "../submit-manager";
 import { VueSubmitContext, VueSubmitProviderOptions, VUE_SUBMIT_KEY } from "./types";
 
@@ -25,12 +25,10 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 
 	let notificationId = 1;
 	submitManager.setNotificationCallback((notification, result) => {
+		let item: any;
 		let isClosed = false;
 		// eslint-disable-next-line no-plusplus
 		const thisNotificationId = notificationId++;
-
-		const active = ref(false);
-
 		const removeNotification = () => {
 			const items: any[] = submitNotificationsMut.value;
 			const newItems = items.filter((i) => i.id !== thisNotificationId);
@@ -45,18 +43,18 @@ export function useSubmitHandler(options: VueSubmitProviderOptions) {
 				return;
 			}
 			setTimeout(removeNotification, delay);
-			active.value = false;
+			item.active = false;
 		};
-		const item = markRaw({
+		item = reactive({
 			id: thisNotificationId,
-			active,
-			notification,
-			result,
+			active: false,
+			notification: markRaw(notification),
+			result: markRaw(result),
 			close,
 		});
 		submitNotificationsMut.value.push(item);
 		nextTick(() => {
-			active.value = true;
+			item.active = true;
 		});
 	});
 
