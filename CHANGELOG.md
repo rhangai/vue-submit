@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.2](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2020-09-21)
+
+
+### Bug Fixes
+
+* **composition:** Notification now initializes as false ([7cc9ace](https://github.com/rhangai/vue-submit/commit/7cc9acee43adb8b300acb0dd7a8759d4b5117735))
+
 ## [3.0.0-beta.1](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.0...v3.0.0-beta.1) (2020-09-21)
 
 ## [3.0.0-beta.0](https://github.com/rhangai/vue-submit/compare/v2.0.8...v3.0.0-beta.0) (2020-09-21)
