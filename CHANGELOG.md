@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.6](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.5...v3.0.0-beta.6) (2020-09-28)
+
+
+### Bug Fixes
+
+* Minor fixes with validation error ([223b41b](https://github.com/rhangai/vue-submit/commit/223b41b636364387b571da70844f0e4a42005a14))
+
 ## [3.0.0-beta.5](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2020-09-21)
 
 ## [3.0.0-beta.4](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2020-09-21)
