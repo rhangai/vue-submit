@@ -5,6 +5,7 @@ export type VueSubmitNotificationItem = {
 	active: boolean;
 	notification: unknown;
 	result: VueSubmitResult;
+	error: Error | null;
 	close(delay?: number | null): void;
 };
 

@@ -4,6 +4,7 @@ import { VueSubmitOptions, VueSubmitResult, VueSubmitValidateItem } from "./type
 import { isValidateLike, isVuelidateLike } from "./util/validate";
 import { valueOrCallback, ValueOrCallback } from "./util/value";
 import { serializeFormData } from "./util/form-data";
+import { ValidateError } from "./error";
 
 export type SubmissionOptions = {
 	skip(context: any): boolean;
@@ -52,7 +53,7 @@ export class Submission {
 	): Promise<VueSubmitResult | null> {
 		if (options.validate) {
 			const isValid = await this.doValidate([].concat(options.validate as any));
-			if (!isValid) throw new Error(`Invalid`);
+			if (!isValid) throw new ValidateError();
 		}
 
 		const isConfirmed = await this.submitManager.confirm(options.confirmation);

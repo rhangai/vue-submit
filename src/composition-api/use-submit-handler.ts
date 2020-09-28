@@ -63,6 +63,7 @@ export function useSubmitHandler(options: VueSubmitHandlerOptions) {
 				active: false,
 				notification: markRaw(notification),
 				result: markRaw(result),
+				error: result.error ? markRaw(result.error) : null,
 				close,
 			});
 			submitNotificationsMut.value.push(item);

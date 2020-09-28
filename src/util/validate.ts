@@ -1,4 +1,4 @@
-export type VueSubmitValidateLike = { validate(): boolean };
+export type VueSubmitValidateLike = { validate(): boolean | Promise<boolean> };
 export type VueSubmitVuelidateLike = { $touch(): boolean; $invalid: boolean };
 
 export function isValidateLike(v: unknown): v is VueSubmitValidateLike {
