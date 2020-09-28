@@ -38,6 +38,7 @@ export class Submission {
 				error: err,
 				response: null,
 			});
+			this.submitManager.callErrorHandler(err);
 		}
 	}
 

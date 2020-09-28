@@ -3,6 +3,7 @@ import { InjectionKey } from "@vue/composition-api";
 import {
 	SubmitManager,
 	SubmitManagerConfirmationCallback,
+	SubmitManagerErrorHandler,
 	SubmitManagerNotificationCallback,
 	SubmitManagerRequestFunction,
 } from "../submit-manager";
@@ -15,6 +16,7 @@ export type VueSubmitContext = {
 
 export type VueSubmitHandlerOptions = {
 	request: SubmitManagerRequestFunction;
+	errorHandler?: SubmitManagerErrorHandler | null;
 	confirmationCallback?: SubmitManagerConfirmationCallback | null;
 	notificationCallback?: SubmitManagerNotificationCallback | null;
 };

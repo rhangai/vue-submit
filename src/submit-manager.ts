@@ -22,6 +22,8 @@ export type SubmitManagerRequestFunction = (
 	params: SubmitManagerRequestFunctionParams
 ) => Promise<VueSubmitResponse>;
 
+export type SubmitManagerErrorHandler = (error: Error) => void;
+
 export type SubmitManagerNotificationCallback = (
 	notification: VueSubmitNotification,
 	result: VueSubmitResult
@@ -36,6 +38,8 @@ export type SubmitManagerConfirmationCallback = (
  */
 export class SubmitManager {
 	private requestFn: SubmitManagerRequestFunction | null = null;
+
+	private errorHandler: SubmitManagerErrorHandler | null = null;
 
 	private confirmationCallback: SubmitManagerConfirmationCallback | null = null;
 
@@ -60,6 +64,17 @@ export class SubmitManager {
 	callRequestFunction(params: SubmitManagerRequestFunctionParams) {
 		if (!this.requestFn) throw new Error(`Invalid request funciton`);
 		return this.requestFn(params);
+	}
+
+	/**
+	 * Set the error handler
+	 */
+	setErrorHandler(handler: SubmitManagerErrorHandler | null) {
+		this.errorHandler = handler;
+	}
+
+	callErrorHandler(error: Error) {
+		if (this.errorHandler) this.errorHandler(error);
 	}
 
 	/**

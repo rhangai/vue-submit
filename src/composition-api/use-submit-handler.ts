@@ -32,6 +32,9 @@ export function useSubmitHandler(options: VueSubmitHandlerOptions) {
 	const submitNotificationsMut = ref<VueSubmitNotificationItem[]>([]);
 
 	submitManager.setRequestFunction(options.request);
+	if (options.errorHandler) {
+		submitManager.setErrorHandler(options.errorHandler);
+	}
 
 	if (options.notificationCallback) {
 		submitManager.setNotificationCallback(options.notificationCallback);
