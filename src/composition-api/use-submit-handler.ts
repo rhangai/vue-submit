@@ -13,6 +13,9 @@ export function useSubmitHandlerRaw(options?: Partial<VueSubmitHandlerOptions> |
 	provide<VueSubmitContext>(VUE_SUBMIT_KEY, { submitManager });
 	if (options) {
 		submitManager.setRequestFunction(options.request ?? null);
+		if (options.errorHandler) {
+			submitManager.setErrorHandler(options.errorHandler);
+		}
 		submitManager.setNotificationCallback(options.notificationCallback ?? null);
 		submitManager.setConfirmationCallback(options.confirmationCallback ?? null);
 	}
