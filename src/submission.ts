@@ -21,19 +21,23 @@ export class Submission {
 		private readonly submissionOptions: SubmissionOptions
 	) {}
 
-	async submit<Data = unknown>(options: VueSubmitOptions<Data>, context?: any) {
+	async submit<Data = unknown>(
+		options: VueSubmitOptions<Data> | (() => VueSubmitOptions<Data>),
+		context?: any
+	) {
 		const isSkip = this.submissionOptions.skip(context);
 		if (isSkip) return;
+		const submitOptions = typeof options === "function" ? options() : options;
 		try {
 			this.submissionOptions.hooks.beforeSubmit(context);
-			const result = await this.doSubmit(options);
+			const result = await this.doSubmit(submitOptions);
 			this.submissionOptions.hooks.afterSubmit(context);
 			if (result) {
-				await this.submitManager.notify(options.onSuccess, result);
+				await this.submitManager.notify(submitOptions.onSuccess, result);
 			}
 		} catch (err) {
 			this.submissionOptions.hooks.error(err, context);
-			await this.submitManager.notify(options.onError, {
+			await this.submitManager.notify(submitOptions.onError, {
 				data: null,
 				error: err,
 				response: null,
