@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.9](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.8...v3.0.0-beta.9) (2020-10-14)
+
+
+### Bug Fixes
+
+* Error on submit options ([e53f3bd](https://github.com/rhangai/vue-submit/commit/e53f3bd210d7bb51fce25f52564dcc09a5a519a3))
+
 ## [3.0.0-beta.8](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.7...v3.0.0-beta.8) (2020-10-02)
 
 
