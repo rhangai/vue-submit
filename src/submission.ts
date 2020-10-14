@@ -25,10 +25,11 @@ export class Submission {
 		options: VueSubmitOptions<Data> | (() => VueSubmitOptions<Data>),
 		context?: any
 	) {
-		const isSkip = this.submissionOptions.skip(context);
-		if (isSkip) return;
-		const submitOptions = typeof options === "function" ? options() : options;
+		let submitOptions: VueSubmitOptions<Data> | null = null;
 		try {
+			const isSkip = this.submissionOptions.skip(context);
+			if (isSkip) return;
+			submitOptions = typeof options === "function" ? options() : options;
 			this.submissionOptions.hooks.beforeSubmit(context);
 			const result = await this.doSubmit(submitOptions);
 			this.submissionOptions.hooks.afterSubmit(context);
@@ -37,7 +38,7 @@ export class Submission {
 			}
 		} catch (err) {
 			this.submissionOptions.hooks.error(err, context);
-			await this.submitManager.notify(submitOptions.onError, {
+			await this.submitManager.notify(submitOptions?.onError, {
 				data: null,
 				error: err,
 				response: null,
