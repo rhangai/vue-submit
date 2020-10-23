@@ -113,17 +113,18 @@ export class SubmitManager {
 		confirmationValue: VueSubmitConfirmationValue | VueSubmitConfirmationCallback
 	): Promise<boolean> {
 		if (!confirmationValue) return true;
+		if (!this.confirmationCallback) {
+			throw new Error(`Confirmation callback was not provided when using useSubmitHandler`);
+		}
 		if (confirmationValue === true) {
-			if (!this.confirmationCallback) return true;
 			return this.confirmationCallback({ message: null });
 		}
 		if (typeof confirmationValue === "string") {
-			if (!this.confirmationCallback) return true;
 			return this.confirmationCallback({ message: confirmationValue });
 		}
 		if (typeof confirmationValue === "function") {
 			return confirmationValue({ defaultConfirmation: this.confirm.bind(this) });
 		}
-		return true;
+		return this.confirmationCallback(confirmationValue);
 	}
 }

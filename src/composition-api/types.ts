@@ -17,6 +17,6 @@ export type VueSubmitContext = {
 export type VueSubmitHandlerOptions = {
 	request: SubmitManagerRequestFunction;
 	errorHandler?: SubmitManagerErrorHandler | null;
-	confirmationCallback?: SubmitManagerConfirmationCallback | null;
-	notificationCallback?: SubmitManagerNotificationCallback | null;
+	confirm?: SubmitManagerConfirmationCallback | null;
+	notify?: SubmitManagerNotificationCallback | null;
 };
