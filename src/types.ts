@@ -1,8 +1,10 @@
 /// <reference path="./request.ts" />
 /// <reference path="./response.ts" />
+/// <reference path="./vendor/vue-notification-manager.ts" />
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { VueSubmitRequestOptions } from "@rhangai/vue-submit/lib/request";
 import type { VueSubmitResponse } from "@rhangai/vue-submit/lib/response";
+import type { Confirmation, Notification } from "@rhangai/vue-notification-manager/lib/types";
 import { ValueOrCallback } from "./util/value";
 
 export type VueSubmitDownloadOptions = {
@@ -10,10 +12,10 @@ export type VueSubmitDownloadOptions = {
 	filename: string | null;
 };
 
-export type VueSubmitNotification = {
+export interface VueSubmitNotification extends Notification {
 	message?: string | null;
 	[key: string]: any;
-};
+}
 
 export type VueSubmitNotificationValue =
 	| undefined
@@ -25,10 +27,10 @@ export type VueSubmitNotificationValue =
 /**
  * Confirmation type
  */
-export type VueSubmitConfirmation = {
+export interface VueSubmitConfirmation extends Confirmation {
 	message?: string | null;
 	[key: string]: any;
-};
+}
 
 export type VueSubmitConfirmationCallbackParams = {
 	defaultConfirmation: (confirmation: VueSubmitConfirmationValue) => Promise<boolean>;
