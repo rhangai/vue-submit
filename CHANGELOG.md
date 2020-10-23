@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.10](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.9...v3.0.0-beta.10) (2020-10-23)
+
 ## [3.0.0-beta.9](https://github.com/rhangai/vue-submit/compare/v3.0.0-beta.8...v3.0.0-beta.9) (2020-10-14)
 
 
