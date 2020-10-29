@@ -49,8 +49,18 @@ export function useSubmit<Data = unknown, RequestOptions = VueSubmitRequestOptio
 		});
 	};
 
+	const submitThrows = async (param?: unknown) => {
+		const result = await submission.submit(() => {
+			return typeof options === "function" ? options(param) : options;
+		});
+		if (result.skip) return result;
+		if (result.error) throw result.error;
+		return result;
+	};
+
 	return {
 		submit,
+		submitThrows,
 		submitting: computed(() => submittingMut.value),
 		submitError: computed(() => submitErrorMut.value),
 	};

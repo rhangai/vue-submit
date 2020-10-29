@@ -15,6 +15,16 @@ export type SubmissionOptions = {
 	};
 };
 
+export type SubmissionResult =
+	| {
+			skip: true;
+	  }
+	| {
+			skip: false;
+			error: Error | null;
+			result: VueSubmitResult | null;
+	  };
+
 export class Submission {
 	constructor(
 		private readonly submitManager: SubmitManager,
@@ -24,11 +34,11 @@ export class Submission {
 	async submit<Data = unknown>(
 		options: VueSubmitOptions<Data> | (() => VueSubmitOptions<Data>),
 		context?: any
-	) {
+	): Promise<SubmissionResult> {
 		let submitOptions: VueSubmitOptions<Data> | null = null;
 		try {
 			const isSkip = this.submissionOptions.skip(context);
-			if (isSkip) return;
+			if (isSkip) return { skip: true };
 			submitOptions = typeof options === "function" ? options() : options;
 			this.submissionOptions.hooks.beforeSubmit(context);
 			const result = await this.doSubmit(submitOptions);
@@ -36,6 +46,7 @@ export class Submission {
 			if (result) {
 				await this.submitManager.notify(submitOptions.onSuccess, result);
 			}
+			return { skip: false, error: null, result };
 		} catch (err) {
 			this.submissionOptions.hooks.error(err, context);
 			await this.submitManager.notify(submitOptions?.onError, {
@@ -44,6 +55,7 @@ export class Submission {
 				response: null,
 			});
 			this.submitManager.callErrorHandler(err);
+			return { skip: false, error: err, result: null };
 		}
 	}
 
