@@ -11,7 +11,9 @@ import { VUE_SUBMIT_KEY } from "./types";
 export function useSubmit<Data = unknown, RequestOptions = VueSubmitRequestOptions>(
 	options:
 		| VueSubmitOptions<Data, RequestOptions>
-		| ((param?: unknown) => VueSubmitOptions<Data, RequestOptions>)
+		| ((
+				param?: any
+		  ) => VueSubmitOptions<Data, RequestOptions> | Promise<VueSubmitOptions<Data, RequestOptions>>)
 ) {
 	const context = inject(VUE_SUBMIT_KEY, null);
 	if (!context) {

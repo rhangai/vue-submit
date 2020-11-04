@@ -32,14 +32,16 @@ export class Submission {
 	) {}
 
 	async submit<Data = unknown>(
-		options: VueSubmitOptions<Data> | (() => VueSubmitOptions<Data>),
+		options:
+			| VueSubmitOptions<Data>
+			| (() => VueSubmitOptions<Data> | Promise<VueSubmitOptions<Data>>),
 		context?: any
 	): Promise<SubmissionResult> {
 		let submitOptions: VueSubmitOptions<Data> | null = null;
 		try {
 			const isSkip = this.submissionOptions.skip(context);
 			if (isSkip) return { skip: true };
-			submitOptions = typeof options === "function" ? options() : options;
+			submitOptions = typeof options === "function" ? await options() : options;
 			this.submissionOptions.hooks.beforeSubmit(context);
 			const result = await this.doSubmit(submitOptions);
 			this.submissionOptions.hooks.afterSubmit(context);
